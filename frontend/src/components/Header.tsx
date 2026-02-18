@@ -3,7 +3,12 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useMotionValueEvent,
+} from "framer-motion";
 import { useAuth } from "@contexts/AuthContext";
 import {
   Menu,
@@ -15,7 +20,7 @@ import {
   ChevronDown,
   Sun,
   Moon,
-  Monitor
+  Monitor,
 } from "lucide-react";
 import { useTheme } from "@contexts/ThemeContext";
 
@@ -26,9 +31,53 @@ const Header: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isThemeExpanded, setIsThemeExpanded] = useState(false);
 
+  const { scrollY } = useScroll();
+  const [isVisible, setIsVisible] = useState(true);
+  const lastYRef = React.useRef(0);
+  const directionRef = React.useRef<"up" | "down">("up");
+  const lastScrollYRef = React.useRef(0); // Track previous scroll position for direction detection
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const currentScrollY = latest;
+    const previousScrollY = lastScrollYRef.current;
+
+    // Determine current direction
+    const currentDirection = currentScrollY > previousScrollY ? "down" : "up";
+
+    // Update last scroll position
+    lastScrollYRef.current = currentScrollY;
+
+    // Check if direction changed
+    if (currentDirection !== directionRef.current) {
+      directionRef.current = currentDirection;
+      lastYRef.current = currentScrollY; // Reset anchor point on direction change
+    }
+
+    // Always show at the top
+    if (currentScrollY < 64) {
+      setIsVisible(true);
+      return;
+    }
+
+    // Caclulate delta from the anchor point (lastXRef)
+    const delta = Math.abs(currentScrollY - lastYRef.current);
+
+    if (currentDirection === "down" && delta > 100) {
+      setIsVisible(false);
+    } else if (currentDirection === "up" && delta > 50) {
+      setIsVisible(true);
+    }
+  });
+
   return (
     <>
-      <header className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-white/20 dark:border-gray-800 shadow-sm dark:shadow-gray-900/10">
+      <div className="h-16 w-full" />
+      <motion.header
+        initial={{ y: 0 }}
+        animate={{ y: isVisible || mobileMenuOpen ? 0 : "-100%" }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="fixed top-0 left-0 right-0 h-16 w-full z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-white/20 dark:border-gray-800 shadow-sm dark:shadow-gray-900/10"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
@@ -373,7 +422,7 @@ const Header: React.FC = () => {
             </motion.div>
           )}
         </AnimatePresence>
-      </header>
+      </motion.header>
     </>
   );
 };

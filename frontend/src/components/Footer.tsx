@@ -47,7 +47,7 @@ export default function Footer() {
             <h4 className="font-heading text-lg font-semibold mb-4">Contact</h4>
             <ul className="space-y-2 text-gray-400">
               <li>Walasmulla, Sri Lanka</li>
-              <li>Phone: +94 XX XXX XXXX</li>
+              <li>Phone: +94 77 077 6848</li>
               <li>Email: info@kochigurupizza.com</li>
             </ul>
           </div>

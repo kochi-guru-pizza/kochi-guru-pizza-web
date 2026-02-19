@@ -21,7 +21,7 @@ const testimonials: Testimonial[] = [
     rating: 5,
     review:
       "The best pizza in Kochi! The wood-fired crust is absolutely perfect, and the toppings are always fresh.",
-    date: "2 weeks ago",
+    date: "2 weeks ago"
   },
   {
     id: 2,
@@ -29,7 +29,7 @@ const testimonials: Testimonial[] = [
     rating: 5,
     review:
       "Amazing taste and great service! The margherita pizza reminds me of authentic Italian pizzas. Highly recommend!",
-    date: "1 month ago",
+    date: "1 month ago"
   },
   {
     id: 3,
@@ -37,7 +37,7 @@ const testimonials: Testimonial[] = [
     rating: 5,
     review:
       "The quality is consistently excellent. Love their special pizza with unique toppings. The ambiance is cozy and welcoming.",
-    date: "3 weeks ago",
+    date: "3 weeks ago"
   },
   {
     id: 4,
@@ -45,7 +45,7 @@ const testimonials: Testimonial[] = [
     rating: 4,
     review:
       "Great pizza at reasonable prices. The crust is thin and crispy, just the way I like it. Will definitely come back!",
-    date: "1 week ago",
+    date: "1 week ago"
   },
   {
     id: 5,
@@ -53,8 +53,8 @@ const testimonials: Testimonial[] = [
     rating: 5,
     review:
       "Fantastic experience! The staff is friendly, the pizza is delicious, and the atmosphere is perfect for family gatherings.",
-    date: "2 months ago",
-  },
+    date: "2 months ago"
+  }
 ];
 
 const avatarColors = [
@@ -62,7 +62,7 @@ const avatarColors = [
   "from-rose-400 to-rose-600",
   "from-teal-400 to-teal-600",
   "from-violet-400 to-violet-600",
-  "from-amber-400 to-amber-600",
+  "from-amber-400 to-amber-600"
 ];
 
 export default function CustomerTestimonials() {

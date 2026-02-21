@@ -1,3 +1,4 @@
+// src/components/HomeComponents/PromotionsSection.tsx
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";

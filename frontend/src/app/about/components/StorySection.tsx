@@ -1,3 +1,4 @@
+// src/app/about/components/StorySection.tsx
 "use client";
 
 import React from "react";

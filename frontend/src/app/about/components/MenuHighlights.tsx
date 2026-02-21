@@ -1,3 +1,4 @@
+// src/app/about/components/MenuHighlights.tsx
 "use client";
 
 import React from "react";

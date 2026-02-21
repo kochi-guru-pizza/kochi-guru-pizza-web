@@ -1,3 +1,4 @@
+// src/app/page.tsx
 import Header from "@components/Header";
 import HeroSection from "@/components/HomeComponents/HeroSection";
 import PromotionsSection from "@/components/HomeComponents/PromotionsSection";

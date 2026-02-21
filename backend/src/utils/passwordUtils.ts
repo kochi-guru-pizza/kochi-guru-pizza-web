@@ -1,3 +1,4 @@
+// src/utils/passwordUtils.ts
 import bcrypt from "bcryptjs";
 
 /**

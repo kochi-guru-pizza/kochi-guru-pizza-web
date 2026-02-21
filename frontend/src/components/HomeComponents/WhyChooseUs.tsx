@@ -1,3 +1,4 @@
+// src/components/HomeComponents/WhyChooseUs.tsx
 "use client";
 
 import React from "react";

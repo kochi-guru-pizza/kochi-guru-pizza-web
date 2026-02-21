@@ -1,3 +1,4 @@
+// src/routes/authRoutes.ts
 import { Router } from "express";
 import passport from "passport";
 import * as authController from "../controllers/authController";

@@ -1,3 +1,4 @@
+// src/controllers/authController.ts
 import { Request, Response } from "express";
 import User, { IUser } from "../models/User";
 import { hashPassword, comparePassword } from "../utils/passwordUtils";

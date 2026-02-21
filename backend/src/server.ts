@@ -37,6 +37,12 @@ app.get("/", (req, res) => {
   res.send("Kochi Guru Pizza Backend is running");
 });
 
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
-});
+// Export the app for Vercel
+export default app;
+
+// Only start the server locally
+if (process.env.NODE_ENV !== "production") {
+  app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
+  });
+}

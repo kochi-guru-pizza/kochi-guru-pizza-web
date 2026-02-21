@@ -1,3 +1,4 @@
+// src/app/about/components/HeroBanner.tsx
 "use client";
 
 import React from "react";

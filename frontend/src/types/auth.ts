@@ -1,3 +1,4 @@
+// src/types/auth.ts
 import { User } from "./user";
 
 export interface AuthContextType {

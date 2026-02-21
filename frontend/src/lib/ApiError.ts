@@ -1,3 +1,4 @@
+// src/lib/ApiError.ts
 export interface ValidationErrorDetail {
   field: string;
   message: string;

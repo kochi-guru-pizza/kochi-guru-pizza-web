@@ -1,3 +1,4 @@
+// src/components/HomeComponents/TrendingItems.tsx
 "use client";
 
 import React from "react";

@@ -1,3 +1,4 @@
+// src/middleware/authorize.ts
 import { Request, Response, NextFunction } from "express";
 import { IUser } from "../models/User";
 

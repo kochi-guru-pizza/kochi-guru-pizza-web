@@ -1,3 +1,4 @@
+// src/app/about/page.tsx
 import { Metadata } from "next";
 import Header from "@components/Header";
 import Footer from "@components/Footer";
@@ -6,8 +7,10 @@ import Footer from "@components/Footer";
 import HeroBanner from "./components/HeroBanner";
 import StorySection from "./components/StorySection";
 import MenuHighlights from "./components/MenuHighlights";
-import VisitUsSection from "./components/VisitUsSection";
 import CtaBanner from "./components/CtaBanner";
+import OurValues from "./components/OurValues";
+import BehindTheScenes from "./components/BehindTheScenes";
+import MeetTheTeam from "./components/MeetTheTeam";
 
 export const metadata: Metadata = {
   title: "About Us - Kochi Guru Pizza",
@@ -26,8 +29,10 @@ export default function AboutPage() {
       <Header />
       <HeroBanner />
       <StorySection />
+      <OurValues />
       <MenuHighlights />
-      <VisitUsSection />
+      <BehindTheScenes />
+      <MeetTheTeam />
       <CtaBanner />
       <Footer />
     </>

@@ -67,10 +67,10 @@ export const httpClient = async <T>(
   options: RequestInit = {}
 ): Promise<T> => {
   const url = `${API_URL}${endpoint}`;
-  const MAX_RETRIES = 3;
+  const MAX_ATTEMPTS = 4;
   let retryDelay = 1000;
 
-  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
     const accessToken = getAccessToken();
 
     // Add authorization header if token exists
@@ -128,7 +128,26 @@ export const httpClient = async <T>(
               });
 
               if (!retryResponse.ok) {
-                throw new Error(`HTTP error! status: ${retryResponse.status}`);
+                if (retryResponse.status === 401) {
+                  clearTokens();
+                  if (typeof window !== "undefined")
+                    window.location.href = "/login";
+                  throw new ApiError(
+                    "Session expired. Please login again.",
+                    401
+                  );
+                }
+
+                const errorData = await retryResponse
+                  .json()
+                  .catch(() => ({ error: "Unknown error" }));
+
+                throw new ApiError(
+                  errorData.error ||
+                    `HTTP error! status: ${retryResponse.status}`,
+                  retryResponse.status,
+                  errorData.details
+                );
               }
 
               return retryResponse.json();
@@ -189,7 +208,7 @@ export const httpClient = async <T>(
         error instanceof ApiError && error.status >= 400 && error.status < 500;
 
       // Don't retry if it's explicitly an error we shouldn't retry, or we ran out of attempts
-      if (attempt === MAX_RETRIES || isAuthError || isClientError) {
+      if (attempt === MAX_ATTEMPTS || isAuthError || isClientError) {
         throw error;
       }
 

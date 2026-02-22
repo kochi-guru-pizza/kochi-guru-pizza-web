@@ -6,6 +6,7 @@ import connectDB from "./config/db";
 import config from "./config";
 import passport from "./config/passport";
 import authRoutes from "./routes/authRoutes";
+import menuRoutes from "./routes/menuRoutes";
 
 connectDB();
 
@@ -32,6 +33,7 @@ app.use(passport.initialize());
 
 // Mount routes
 app.use("/v1/auth", authRoutes);
+app.use("/v1/menu", menuRoutes);
 
 // Root route
 app.get("/", (req, res) => {

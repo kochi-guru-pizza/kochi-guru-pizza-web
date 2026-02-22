@@ -67,108 +67,137 @@ export const httpClient = async <T>(
   options: RequestInit = {}
 ): Promise<T> => {
   const url = `${API_URL}${endpoint}`;
-  const accessToken = getAccessToken();
+  const MAX_RETRIES = 3;
+  let retryDelay = 1000;
 
-  // Add authorization header if token exists
-  // Normalize headers using Headers API
-  const headers = new Headers(options.headers);
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    const accessToken = getAccessToken();
 
-  // Set default Content-Type if not provided
-  if (!headers.has("Content-Type")) {
-    headers.set("Content-Type", "application/json");
-  }
+    // Add authorization header if token exists
+    // Normalize headers using Headers API
+    const headers = new Headers(options.headers);
 
-  // Add authorization header if token exists
-  if (accessToken && !headers.has("Authorization")) {
-    headers.set("Authorization", `Bearer ${accessToken}`);
-  }
+    // Set default Content-Type if not provided
+    if (!headers.has("Content-Type")) {
+      headers.set("Content-Type", "application/json");
+    }
 
-  try {
-    const response = await fetch(url, {
-      ...options,
-      headers
-    });
+    // Add authorization header if token exists
+    if (accessToken && !headers.has("Authorization")) {
+      headers.set("Authorization", `Bearer ${accessToken}`);
+    }
 
-    // Handle 401 - Token expired, try to refresh
-    // Skip for login endpoint to avoid page refresh loop on invalid credentials
-    if (
-      response.status === 401 &&
-      !endpoint.includes("/auth/login") &&
-      !endpoint.includes("/auth/register")
-    ) {
-      const refreshToken = getRefreshToken();
+    try {
+      const response = await fetch(url, {
+        ...options,
+        headers
+      });
 
-      if (refreshToken) {
-        try {
-          // Try to refresh the access token
-          const refreshResponse = await fetch(`${API_URL}/auth/refresh`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ refreshToken })
-          });
+      // Handle 401 - Token expired, try to refresh
+      // Skip for login endpoint to avoid page refresh loop on invalid credentials
+      if (
+        response.status === 401 &&
+        !endpoint.includes("/auth/login") &&
+        !endpoint.includes("/auth/register")
+      ) {
+        const refreshToken = getRefreshToken();
 
-          if (refreshResponse.ok) {
-            const {
-              accessToken: newAccessToken,
-              refreshToken: newRefreshToken
-            } = await refreshResponse.json();
-            setTokens(newAccessToken, newRefreshToken);
-
-            // Retry original request with new token
-            headers.set("Authorization", `Bearer ${newAccessToken}`);
-            const retryResponse = await fetch(url, {
-              ...options,
-              headers
+        if (refreshToken) {
+          try {
+            // Try to refresh the access token
+            const refreshResponse = await fetch(`${API_URL}/auth/refresh`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({ refreshToken })
             });
 
-            if (!retryResponse.ok) {
-              throw new Error(`HTTP error! status: ${retryResponse.status}`);
-            }
+            if (refreshResponse.ok) {
+              const {
+                accessToken: newAccessToken,
+                refreshToken: newRefreshToken
+              } = await refreshResponse.json();
+              setTokens(newAccessToken, newRefreshToken);
 
-            return retryResponse.json();
-          } else {
-            // Only force logout if the backend explicitly tells us the token is invalid (400, 401)
-            if ([400, 401].includes(refreshResponse.status)) {
-              clearTokens();
-              if (typeof window !== "undefined")
-                window.location.href = "/login";
-              throw new Error("Session expired. Please login again.");
+              // Retry original request with new token
+              headers.set("Authorization", `Bearer ${newAccessToken}`);
+              const retryResponse = await fetch(url, {
+                ...options,
+                headers
+              });
+
+              if (!retryResponse.ok) {
+                throw new Error(`HTTP error! status: ${retryResponse.status}`);
+              }
+
+              return retryResponse.json();
+            } else {
+              // Only force logout if the backend explicitly tells us the token is invalid (400, 401)
+              if ([400, 401].includes(refreshResponse.status)) {
+                clearTokens();
+                if (typeof window !== "undefined")
+                  window.location.href = "/login";
+                throw new ApiError(
+                  "Session expired. Please login again.",
+                  refreshResponse.status
+                );
+              }
+              throw new ApiError(
+                `HTTP error! status: ${refreshResponse.status}`,
+                refreshResponse.status
+              );
             }
-            throw new Error(`HTTP error! status: ${refreshResponse.status}`);
+          } catch (error: unknown) {
+            // Network errors or other exceptions. Do not force logout.
+            if (error instanceof Error) {
+              throw error;
+            }
+            throw new Error(String(error));
           }
-        } catch (error: unknown) {
-          // Network errors or other exceptions. Do not force logout.
-          if (error instanceof Error) {
-            throw error;
-          }
-          throw new Error(String(error));
+        } else {
+          // No refresh token, clear tokens
+          clearTokens();
+          if (typeof window !== "undefined") window.location.href = "/login";
+          throw new Error("Unauthorized");
         }
-      } else {
-        // No refresh token, clear tokens
-        clearTokens();
-        if (typeof window !== "undefined") window.location.href = "/login";
-        throw new Error("Unauthorized");
-      }
-    }
-
-    if (!response.ok) {
-      const errorData = await response
-        .json()
-        .catch(() => ({ error: "Unknown error" }));
-
-      if (response.status === 400 && errorData.details) {
-        throw new ApiError(errorData.error, response.status, errorData.details);
       }
 
-      throw new Error(
-        errorData.error || `HTTP error! status: ${response.status}`
-      );
-    }
+      if (!response.ok) {
+        const errorData = await response
+          .json()
+          .catch(() => ({ error: "Unknown error" }));
 
-    return response.json();
-  } catch (error) {
-    throw error;
+        throw new ApiError(
+          errorData.error || `HTTP error! status: ${response.status}`,
+          response.status,
+          errorData.details
+        );
+      }
+
+      return response.json();
+    } catch (error) {
+      // Do not retry 4xx errors or explicit authentication terminations
+      const isAuthError =
+        (error instanceof ApiError &&
+          error.message === "Session expired. Please login again.") ||
+        (error instanceof Error &&
+          (error.message === "Session expired. Please login again." ||
+            error.message === "Unauthorized"));
+
+      const isClientError =
+        error instanceof ApiError && error.status >= 400 && error.status < 500;
+
+      // Don't retry if it's explicitly an error we shouldn't retry, or we ran out of attempts
+      if (attempt === MAX_RETRIES || isAuthError || isClientError) {
+        throw error;
+      }
+
+      // Wait before retrying (Exponential backoff)
+      await new Promise((res) => setTimeout(res, retryDelay));
+      retryDelay *= 2;
+    }
   }
+
+  throw new Error("Network error");
 };

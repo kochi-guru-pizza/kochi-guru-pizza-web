@@ -117,7 +117,6 @@ export const httpClient = async <T>(
             setTokens(newAccessToken, newRefreshToken);
 
             // Retry original request with new token
-            // Retry original request with new token
             headers.set("Authorization", `Bearer ${newAccessToken}`);
             const retryResponse = await fetch(url, {
               ...options,
@@ -130,15 +129,21 @@ export const httpClient = async <T>(
 
             return retryResponse.json();
           } else {
-            // Refresh failed, clear tokens and throw error
-            clearTokens();
-            if (typeof window !== "undefined") window.location.href = "/login";
-            throw new Error("Session expired. Please login again.");
+            // Only force logout if the backend explicitly tells us the token is invalid (400, 401)
+            if ([400, 401].includes(refreshResponse.status)) {
+              clearTokens();
+              if (typeof window !== "undefined")
+                window.location.href = "/login";
+              throw new Error("Session expired. Please login again.");
+            }
+            throw new Error(`HTTP error! status: ${refreshResponse.status}`);
           }
-        } catch {
-          clearTokens();
-          if (typeof window !== "undefined") window.location.href = "/login";
-          throw new Error("Session expired. Please login again.");
+        } catch (error: unknown) {
+          // Network errors or other exceptions. Do not force logout.
+          if (error instanceof Error) {
+            throw error;
+          }
+          throw new Error(String(error));
         }
       } else {
         // No refresh token, clear tokens

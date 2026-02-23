@@ -119,6 +119,7 @@ export default function MenuItemFormPage({
     setSaving(true);
     try {
       await onSave(payload);
+      router.push("/dashboard/menu");
     } catch {
       // onSave handles toast errors
     } finally {

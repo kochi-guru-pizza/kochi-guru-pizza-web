@@ -60,8 +60,7 @@ const MenuItemSchema = new Schema<IMenuItem>(
     },
     description: {
       type: String,
-      trim: true,
-      default: null
+      trim: true
     },
     category: {
       type: String,
@@ -85,16 +84,14 @@ const MenuItemSchema = new Schema<IMenuItem>(
     },
     price: {
       type: Number,
-      min: 0,
-      default: null
+      min: 0
     },
     isAvailable: {
       type: Boolean,
       default: true
     },
     image: {
-      type: String,
-      default: null
+      type: String
     },
     sortOrder: {
       type: Number,

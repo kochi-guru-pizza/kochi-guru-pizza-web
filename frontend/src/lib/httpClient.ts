@@ -138,9 +138,12 @@ export const httpClient = async <T>(
                   );
                 }
 
-                const errorData = await retryResponse
-                  .json()
-                  .catch(() => ({ error: "Unknown error" }));
+                let errorData;
+                try {
+                  errorData = await retryResponse.json();
+                } catch {
+                  errorData = { error: "Unknown error" };
+                }
 
                 throw new ApiError(
                   errorData.error ||
@@ -183,9 +186,12 @@ export const httpClient = async <T>(
       }
 
       if (!response.ok) {
-        const errorData = await response
-          .json()
-          .catch(() => ({ error: "Unknown error" }));
+        let errorData;
+        try {
+          errorData = await response.json();
+        } catch {
+          errorData = { error: "Unknown error" };
+        }
 
         throw new ApiError(
           errorData.error || `HTTP error! status: ${response.status}`,

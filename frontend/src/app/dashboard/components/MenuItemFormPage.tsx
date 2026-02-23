@@ -2,7 +2,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ArrowLeft, Loader2, Save } from "lucide-react";
 import toast from "react-hot-toast";
@@ -39,7 +38,6 @@ export default function MenuItemFormPage({
   item,
   onSave
 }: MenuItemFormPageProps) {
-  const router = useRouter();
   const isEdit = !!item;
 
   const [name, setName] = useState(item?.name ?? "");
@@ -112,14 +110,21 @@ export default function MenuItemFormPage({
 
     if (isVariantCategory) {
       payload.variants = variants;
+      // In edit mode, explicitly clear price if switching from non-variant to variant
+      if (isEdit) {
+        payload.price = undefined;
+      }
     } else {
       payload.price = Number(price);
+      // In edit mode, explicitly clear variants if switching from variant to non-variant
+      if (isEdit) {
+        payload.variants = [];
+      }
     }
 
     setSaving(true);
     try {
       await onSave(payload);
-      router.push("/dashboard/menu");
     } catch {
       // onSave handles toast errors
     } finally {

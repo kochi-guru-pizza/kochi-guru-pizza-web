@@ -126,10 +126,21 @@ export const updateMenuItem = async (
       "sortOrder"
     ];
 
-    for (const field of allowedFields) {
+    allowedFields.forEach((field) => {
       if (req.body[field] !== undefined) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (item as any)[field] = req.body[field];
+        item.set(field, req.body[field]);
+      }
+    });
+
+    // Clean up stale pricing fields if category changed
+    if (req.body.category) {
+      const variantCategories = ["pizza", "add_on"];
+      if (variantCategories.includes(req.body.category)) {
+        // Switching to variant category: clear flat price
+        item.price = undefined;
+      } else {
+        // Switching to non-variant category: clear variants
+        item.variants = [];
       }
     }
 

@@ -153,7 +153,11 @@ export const httpClient = async <T>(
                 );
               }
 
-              return retryResponse.json();
+              try {
+                return await retryResponse.json();
+              } catch {
+                throw new Error("Failed to parse JSON response");
+              }
             } else {
               // Only force logout if the backend explicitly tells us the token is invalid (400, 401)
               if ([400, 401].includes(refreshResponse.status)) {
@@ -200,7 +204,11 @@ export const httpClient = async <T>(
         );
       }
 
-      return response.json();
+      try {
+        return await response.json();
+      } catch {
+        throw new Error("Failed to parse JSON response");
+      }
     } catch (error) {
       // Do not retry 4xx errors or explicit authentication terminations
       const isAuthError =

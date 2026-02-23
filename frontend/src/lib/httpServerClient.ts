@@ -45,7 +45,11 @@ export const httpServerClient = async <T>(
         );
       }
 
-      return response.json();
+      try {
+        return await response.json();
+      } catch {
+        throw new Error("Failed to parse JSON response");
+      }
     } catch (error) {
       const isClientError =
         error instanceof ApiError && error.status >= 400 && error.status < 500;

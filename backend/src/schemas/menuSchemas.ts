@@ -85,44 +85,32 @@ export const updateMenuItemSchema = z.object({
 
         // If category is a variant category
         if (data.category && variantCategories.includes(data.category)) {
-          // When category is explicitly set to a variant category, require the client
-          // to explicitly clear price (set to undefined) to avoid leaving stale pricing.
-          if (touchedPrice && data.price !== undefined) {
+          // Whenever category is provided, we MUST ensure we have variants and NO price.
+          // This prevents partial updates from leaving the item in a mixed state.
+          if (!touchedVariants || !touchedPrice || data.price !== undefined) {
             return false;
           }
 
-          // When variants or price are part of this update, ensure at least one is effectively provided.
-          if (touchedVariants || touchedPrice) {
-            return (
-              (Array.isArray(data.variants) && data.variants.length > 0) ||
-              data.price === undefined
-            );
-          }
-          // Category changed to a variant category, but this update does not touch price/variants.
-          // Allow it; existing values are assumed to remain valid.
-          return true;
+          return Array.isArray(data.variants) && data.variants.length > 0;
         }
 
         // If category is a non-variant category
         if (data.category && !variantCategories.includes(data.category)) {
-          // When category is explicitly set to a non-variant category, require the client
-          // to explicitly clear variants to avoid leaving stale variants in the database.
-          if (!touchedVariants) {
+          // Whenever category is provided, we MUST ensure we have price and NO variants.
+          if (
+            !touchedPrice ||
+            !touchedVariants ||
+            (Array.isArray(data.variants) && data.variants.length > 0)
+          ) {
             return false;
           }
 
-          // Variants must be provided as an empty array for non-variant categories.
-          if (Array.isArray(data.variants) && data.variants.length === 0) {
-            return true;
-          }
-
-          // Any other variants payload (including non-empty arrays) is invalid.
-          return false;
+          return data.price !== undefined;
         }
 
-        // If category is not provided but variants/price are, reject the update:
-        // Without category, we cannot safely enforce the pricing model invariant,
-        // and might otherwise end up with both price and variants (e.g. updating price on a pizza).
+        // If category is NOT provided, we allow updating name/description etc.
+        // However, we still reject "blind" updates to price/variants without category
+        // (This was already handled by the return false below, but let's be explicit)
         if (!touchedCategory && (touchedVariants || touchedPrice)) {
           return false;
         }
@@ -131,7 +119,7 @@ export const updateMenuItemSchema = z.object({
       },
       {
         message:
-          "Category is required when updating price or variants, and they must be consistent."
+          "When updating category, you must provide the full pricing model (variants for pizza/add_on, flat price for others). Category is required when changing prices."
       }
     )
 });
@@ -151,6 +139,9 @@ export const deleteMenuItemSchema = z.object({
 export const listMenuItemsSchema = z.object({
   query: z.object({
     category: categoryEnum.optional(),
-    isAvailable: z.enum(["true", "false"]).optional()
+    isAvailable: z
+      .enum(["true", "false"])
+      .transform((v) => v === "true")
+      .optional()
   })
 });

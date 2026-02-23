@@ -63,7 +63,6 @@ export default function MenuManagementPage() {
       setDeletingItem(null);
     } catch {
       toast.error("Failed to delete menu item");
-      throw new Error("Delete failed");
     }
   };
 

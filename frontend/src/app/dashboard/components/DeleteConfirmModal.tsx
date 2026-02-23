@@ -4,7 +4,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { AlertTriangle, Loader2 } from "lucide-react";
 import { MenuItem } from "@typings/menu";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface DeleteConfirmModalProps {
   item: MenuItem;
@@ -18,6 +18,16 @@ export default function DeleteConfirmModal({
   onClose
 }: DeleteConfirmModalProps) {
   const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && !deleting) {
+        onClose();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onClose, deleting]);
 
   const handleConfirm = async () => {
     setDeleting(true);
@@ -35,9 +45,12 @@ export default function DeleteConfirmModal({
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
-        onClick={(e) => e.target === e.currentTarget && onClose()}
+        onClick={(e) => e.target === e.currentTarget && !deleting && onClose()}
       >
         <motion.div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="delete-confirm-title"
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.95, opacity: 0 }}
@@ -49,7 +62,10 @@ export default function DeleteConfirmModal({
               <AlertTriangle size={22} className="text-red-500" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-gray-900 dark:text-white">
+              <h2
+                id="delete-confirm-title"
+                className="text-base font-bold text-gray-900 dark:text-white"
+              >
                 Delete Menu Item
               </h2>
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">

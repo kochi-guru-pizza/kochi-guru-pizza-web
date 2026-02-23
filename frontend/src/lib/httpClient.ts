@@ -138,9 +138,12 @@ export const httpClient = async <T>(
                   );
                 }
 
-                const errorData = await retryResponse
-                  .json()
-                  .catch(() => ({ error: "Unknown error" }));
+                let errorData;
+                try {
+                  errorData = await retryResponse.json();
+                } catch {
+                  errorData = { error: "Unknown error" };
+                }
 
                 throw new ApiError(
                   errorData.error ||
@@ -150,7 +153,11 @@ export const httpClient = async <T>(
                 );
               }
 
-              return retryResponse.json();
+              try {
+                return await retryResponse.json();
+              } catch {
+                throw new Error("Failed to parse JSON response");
+              }
             } else {
               // Only force logout if the backend explicitly tells us the token is invalid (400, 401)
               if ([400, 401].includes(refreshResponse.status)) {
@@ -183,9 +190,12 @@ export const httpClient = async <T>(
       }
 
       if (!response.ok) {
-        const errorData = await response
-          .json()
-          .catch(() => ({ error: "Unknown error" }));
+        let errorData;
+        try {
+          errorData = await response.json();
+        } catch {
+          errorData = { error: "Unknown error" };
+        }
 
         throw new ApiError(
           errorData.error || `HTTP error! status: ${response.status}`,
@@ -194,7 +204,11 @@ export const httpClient = async <T>(
         );
       }
 
-      return response.json();
+      try {
+        return await response.json();
+      } catch {
+        throw new Error("Failed to parse JSON response");
+      }
     } catch (error) {
       // Do not retry 4xx errors or explicit authentication terminations
       const isAuthError =
@@ -207,8 +221,8 @@ export const httpClient = async <T>(
       const isClientError =
         error instanceof ApiError && error.status >= 400 && error.status < 500;
 
-      // Don't retry if it's explicitly an error we shouldn't retry, or we ran out of attempts
-      if (attempt === MAX_ATTEMPTS || isAuthError || isClientError) {
+      // Don't retry if it's an auth error or client error
+      if (isAuthError || isClientError) {
         throw error;
       }
 

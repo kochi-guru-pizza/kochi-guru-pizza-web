@@ -5,6 +5,7 @@ import Footer from "@components/Footer";
 import MenuHeroBanner from "./components/MenuHeroBanner";
 import MenuContent from "./components/MenuContent";
 import { MenuItem, MenuCategory, CATEGORIES } from "@typings/menu";
+import { httpServerClient } from "@lib/httpServerClient";
 
 export const metadata: Metadata = {
   title: "Menu - Kochi Guru Pizza",
@@ -17,20 +18,17 @@ export const metadata: Metadata = {
   }
 };
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/v1";
-
 async function fetchMenuItems(): Promise<MenuItem[]> {
   try {
-    const res = await fetch(`${API_URL}/menu?isAvailable=true`, {
-      // Revalidate every 60 seconds so the menu stays fresh without a full rebuild
-      next: { revalidate: 60 }
-    });
-
-    if (!res.ok) return [];
-
-    const data = await res.json();
+    const data = await httpServerClient<{ items: MenuItem[] }>(
+      "/menu?isAvailable=true",
+      {
+        next: { revalidate: 60 }
+      }
+    );
     return data.items ?? [];
-  } catch {
+  } catch (error) {
+    console.error("Failed to fetch menu items despite retries:", error);
     return [];
   }
 }

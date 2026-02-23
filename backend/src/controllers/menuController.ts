@@ -20,7 +20,7 @@ export const listMenuItems = async (
     }
 
     if (isAvailable !== undefined) {
-      filter.isAvailable = isAvailable === "true";
+      filter.isAvailable = isAvailable;
     }
 
     const items = await MenuItem.find(filter).sort({
@@ -126,10 +126,27 @@ export const updateMenuItem = async (
       "sortOrder"
     ];
 
-    for (const field of allowedFields) {
+    allowedFields.forEach((field) => {
       if (req.body[field] !== undefined) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (item as any)[field] = req.body[field];
+        item.set(field, req.body[field]);
+      }
+    });
+
+    // Clean up stale pricing fields if category changed
+    if (req.body.category) {
+      const variantCategories = ["pizza", "add_on"];
+      const isVariantCategory = variantCategories.includes(req.body.category);
+
+      if (isVariantCategory) {
+        // Switching to variant category: only clear flat price if new variants are provided
+        if (req.body.variants !== undefined) {
+          item.price = undefined;
+        }
+      } else {
+        // Switching to non-variant category: only clear variants if new price is provided
+        if (req.body.price !== undefined) {
+          item.variants = [];
+        }
       }
     }
 

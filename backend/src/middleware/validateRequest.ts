@@ -12,9 +12,9 @@ export const validateRequest =
         params: req.params
       })) as any;
 
-      req.body = parsed.body || req.body;
-      req.query = parsed.query || req.query;
-      req.params = parsed.params || req.params;
+      if (parsed.body) Object.assign(req.body, parsed.body);
+      if (parsed.query) Object.assign(req.query, parsed.query);
+      if (parsed.params) Object.assign(req.params, parsed.params);
 
       next();
     } catch (error) {

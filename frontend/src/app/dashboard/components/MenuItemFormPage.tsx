@@ -110,16 +110,8 @@ export default function MenuItemFormPage({
 
     if (isVariantCategory) {
       payload.variants = variants;
-      // In edit mode, explicitly clear price if switching from non-variant to variant
-      if (isEdit) {
-        payload.price = undefined;
-      }
     } else {
       payload.price = Number(price);
-      // In edit mode, explicitly clear variants if switching from variant to non-variant
-      if (isEdit) {
-        payload.variants = [];
-      }
     }
 
     setSaving(true);

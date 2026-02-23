@@ -85,9 +85,9 @@ export const updateMenuItemSchema = z.object({
 
         // If category is a variant category
         if (data.category && variantCategories.includes(data.category)) {
-          // Whenever category is provided, we MUST ensure we have variants and NO price.
-          // This prevents partial updates from leaving the item in a mixed state.
-          if (!touchedVariants || !touchedPrice || data.price !== undefined) {
+          // Whenever category is provided, we MUST ensure we have variants and NO price field.
+          // Note: In JSON, "no price" means the key is absent (touchedPrice is false).
+          if (!touchedVariants || touchedPrice) {
             return false;
           }
 
@@ -96,16 +96,21 @@ export const updateMenuItemSchema = z.object({
 
         // If category is a non-variant category
         if (data.category && !variantCategories.includes(data.category)) {
-          // Whenever category is provided, we MUST ensure we have price and NO variants.
+          // Whenever category is provided, we MUST ensure we have a price.
+          if (!touchedPrice || data.price === undefined) {
+            return false;
+          }
+
+          // If variants are provided, they MUST be empty.
           if (
-            !touchedPrice ||
-            !touchedVariants ||
-            (Array.isArray(data.variants) && data.variants.length > 0)
+            touchedVariants &&
+            Array.isArray(data.variants) &&
+            data.variants.length > 0
           ) {
             return false;
           }
 
-          return data.price !== undefined;
+          return true;
         }
 
         // If category is NOT provided, we allow updating name/description etc.

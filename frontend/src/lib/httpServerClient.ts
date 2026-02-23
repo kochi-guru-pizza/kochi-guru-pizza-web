@@ -54,9 +54,8 @@ export const httpServerClient = async <T>(
       const isClientError =
         error instanceof ApiError && error.status >= 400 && error.status < 500;
 
-      // Don't retry if it's explicitly an error we shouldn't retry, or we ran out of attempts
-      // Using MAX_ATTEMPTS - 1 correctly throws the last error instead of falling through to "Network error"
-      if (attempt === MAX_ATTEMPTS - 1 || isClientError) {
+      // Don't retry if it's a client error (e.g., 4xx)
+      if (isClientError) {
         throw error;
       }
 

@@ -221,8 +221,8 @@ export const httpClient = async <T>(
       const isClientError =
         error instanceof ApiError && error.status >= 400 && error.status < 500;
 
-      // Don't retry if it's explicitly an error we shouldn't retry, or we ran out of attempts
-      if (attempt === MAX_ATTEMPTS || isAuthError || isClientError) {
+      // Don't retry if it's an auth error or client error
+      if (isAuthError || isClientError) {
         throw error;
       }
 

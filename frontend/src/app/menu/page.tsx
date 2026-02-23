@@ -5,6 +5,7 @@ import Footer from "@components/Footer";
 import MenuHeroBanner from "./components/MenuHeroBanner";
 import MenuContent from "./components/MenuContent";
 import { MenuItem, MenuCategory, CATEGORIES } from "@typings/menu";
+import { httpServerClient } from "@lib/httpServerClient";
 
 export const metadata: Metadata = {
   title: "Menu - Kochi Guru Pizza",
@@ -16,8 +17,6 @@ export const metadata: Metadata = {
       "From Italian-style pizzas in three sizes to fresh fruit juices — discover everything on our menu."
   }
 };
-
-import { httpServerClient } from "@lib/httpServerClient";
 
 async function fetchMenuItems(): Promise<MenuItem[]> {
   try {

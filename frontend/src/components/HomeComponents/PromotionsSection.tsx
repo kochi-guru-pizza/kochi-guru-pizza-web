@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 type PromotionSlide = {
   imageUrl: string;
@@ -17,29 +18,32 @@ const promotionSlides: PromotionSlide[] = [
     imageUrl: "/assets/images/offers/independence-day-offer.jpg",
     tag: "Independence Day",
     title: "Celebrate Big",
-    subtitle: "2 Large Pizzas + 2 Drinks — one unbeatable price for the nation's big day!",
+    subtitle:
+      "2 Large Pizzas + 2 Drinks — one unbeatable price for the nation's big day!",
     discount: "40% OFF",
     expires: "Today Only",
-    badge: "LIMITED",
+    badge: "LIMITED"
   },
   {
     imageUrl: "/assets/images/offers/offer-1.jpg",
     tag: "Tonight Only",
     title: "Late Night Feast",
-    subtitle: "Free cheese roll with any large pizza ordered after 9PM. Hot & tasty, quick delivery!",
+    subtitle:
+      "Free cheese roll with any large pizza ordered after 9PM. Hot & tasty, quick delivery!",
     discount: "FREE SIDES",
     expires: "11:59 PM",
-    badge: "HOT",
+    badge: "HOT"
   },
   {
     imageUrl: "/assets/images/offers/offer-2.jpg",
     tag: "Exclusive Deal",
     title: "Members Special",
-    subtitle: "Only available at Kochi Guru Pizza. Flash savings on your favourite combos.",
+    subtitle:
+      "Only available at Kochi Guru Pizza. Flash savings on your favourite combos.",
     discount: "SAVE BIG",
     expires: "This Week",
-    badge: "EXCLUSIVE",
-  },
+    badge: "EXCLUSIVE"
+  }
 ];
 
 function EmptyState() {
@@ -65,7 +69,7 @@ function OfferCard({ slide }: { slide: PromotionSlide }) {
           className="absolute inset-0 opacity-100 dark:opacity-0"
           style={{
             background:
-              "radial-gradient(900px 420px at 20% 50%, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.00) 60%)",
+              "radial-gradient(900px 420px at 20% 50%, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.00) 60%)"
           }}
         />
         {/* Dark */}
@@ -73,16 +77,16 @@ function OfferCard({ slide }: { slide: PromotionSlide }) {
           className="absolute inset-0 opacity-0 dark:opacity-100"
           style={{
             background:
-              "radial-gradient(900px 420px at 20% 50%, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.00) 62%)",
+              "radial-gradient(900px 420px at 20% 50%, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.00) 62%)"
           }}
         />
       </div>
       <div className="relative grid grid-cols-12 h-full">
         {/* LEFT CONTENT */}
-        <div className="col-span-12 md:col-span-5 flex items-center">
-          <div className="w-full px-20 py-10">
+        <div className="col-span-12 md:col-span-5 flex items-center order-2 md:order-1">
+          <div className="w-full px-6 sm:px-10 md:px-14 lg:px-20 py-6 md:py-10">
             {/* Top chips row */}
-            <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center gap-3 mb-4 md:mb-6">
               <span className="font-mono text-[0.6rem] font-black tracking-[0.18em] px-3 py-1 rounded bg-orange-600 text-white">
                 {slide.badge}
               </span>
@@ -92,22 +96,22 @@ function OfferCard({ slide }: { slide: PromotionSlide }) {
             </div>
 
             {/* Title */}
-            <h3 className="font-heading text-gray-900 dark:text-white text-4xl font-bold leading-tight mb-3">
+            <h3 className="font-heading text-gray-900 dark:text-white text-2xl sm:text-3xl md:text-4xl font-bold leading-tight mb-3">
               {slide.title}
             </h3>
 
             {/* Subtitle */}
-            <p className="text-gray-600 dark:text-gray-400 text-[0.95rem] leading-relaxed mb-7 max-w-[30rem]">
+            <p className="text-gray-600 dark:text-gray-400 text-sm md:text-[0.95rem] leading-relaxed mb-4 md:mb-7 max-w-120">
               {slide.subtitle}
             </p>
 
             {/* Discount */}
-            <div className="font-heading text-5xl font-extrabold leading-none text-orange-600 mb-4">
+            <div className="font-heading text-4xl md:text-5xl font-extrabold leading-none text-orange-600 mb-3 md:mb-4">
               {slide.discount}
             </div>
 
             {/* Expiry */}
-            <div className="flex items-center gap-2 mb-8">
+            <div className="flex items-center gap-2 mb-5 md:mb-8">
               <span className="inline-block w-2 h-2 rounded-full bg-green-500 shadow-[0_0_6px_rgba(34,197,94,0.9)]" />
               <span className="font-mono text-[0.75rem] text-gray-500 dark:text-gray-400 tracking-wider">
                 Expires: {slide.expires}
@@ -117,7 +121,7 @@ function OfferCard({ slide }: { slide: PromotionSlide }) {
             {/* Button */}
             <a
               href="tel:0770776848"
-              className="inline-flex items-center gap-2 w-fit px-7 py-3 rounded-lg font-bold text-[0.9rem] tracking-wider transition-colors duration-200 bg-orange-600 hover:bg-orange-700 text-white"
+              className="inline-flex items-center gap-2 w-fit px-6 md:px-7 py-2.5 md:py-3 rounded-lg font-bold text-[0.9rem] tracking-wider transition-colors duration-200 bg-orange-600 hover:bg-orange-700 text-white"
             >
               ORDER NOW →
             </a>
@@ -125,13 +129,12 @@ function OfferCard({ slide }: { slide: PromotionSlide }) {
         </div>
 
         {/* RIGHT FLYER */}
-        <div className="col-span-12 md:col-span-7 flex items-center justify-end p-6">
+        <div className="col-span-12 md:col-span-7 flex items-center justify-center md:justify-end p-4 md:p-6 order-1 md:order-2">
           <img
             src={slide.imageUrl}
             alt={slide.title}
             draggable={false}
-            className="h-full w-full object-contain object-right select-none rounded-lg"
-            style={{ maxHeight: "410px" }}
+            className="w-full object-contain md:object-center select-none rounded-lg max-h-64 sm:max-h-80 md:max-h-120"
           />
         </div>
       </div>
@@ -142,14 +145,50 @@ function OfferCard({ slide }: { slide: PromotionSlide }) {
 export default function PromotionsSection() {
   const slides = promotionSlides;
   const [active, setActive] = useState(0);
+  const [visible, setVisible] = useState(0);
+  const [fading, setFading] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const activeRef = useRef(0);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [cardHeight, setCardHeight] = useState<number | undefined>(undefined);
+
+  // ResizeObserver — tracks the inner content height and updates the outer container
+  useEffect(() => {
+    const el = contentRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) => {
+      setCardHeight(entry.contentRect.height);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const goTo = useCallback(
+    (next: number) => {
+      if (fading) return;
+      activeRef.current = next;
+      setActive(next);
+      setFading(true);
+      setTimeout(() => {
+        setVisible(next);
+        setFading(false);
+      }, 300);
+    },
+    [fading]
+  );
 
   const startAuto = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
     if (slides.length === 0) return;
-
     timerRef.current = setInterval(() => {
-      setActive((a) => (a + 1) % slides.length);
+      const next = (activeRef.current + 1) % slides.length;
+      activeRef.current = next;
+      setActive(next);
+      setFading(true);
+      setTimeout(() => {
+        setVisible(next);
+        setFading(false);
+      }, 300);
     }, 4500);
   }, [slides.length]);
 
@@ -161,66 +200,85 @@ export default function PromotionsSection() {
   }, [startAuto]);
 
   const handleClick = (i: number) => {
-    setActive(i);
+    goTo(i);
+    activeRef.current = i;
     startAuto();
   };
 
-  const activeSlide = slides[active];
+  const activeSlide = slides[visible];
 
   return (
     <section className="py-20 md:py-24 bg-white dark:bg-gray-950 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
+        <motion.div
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Special Offers
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-6">
-            Don&apos;t miss out on our exclusive deals and limited-time promotions
+            Don&apos;t miss out on our exclusive deals and limited-time
+            promotions
           </p>
-
-        </div>
+        </motion.div>
 
         {/* MAIN CARD */}
-        <div className="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700">
-          <div className="w-full" style={{ height: "450px" }}>
-            {slides.length === 0 || !activeSlide ? (
-              <EmptyState />
-            ) : (
-              <div className="w-full h-full kgp-offer-enter">
-                <OfferCard key={active} slide={activeSlide} />
-              </div>
-            )}
+        <motion.div
+          className="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.15 }}
+        >
+          {/* Outer container animates height smoothly via measured inner content */}
+          <div
+            style={{
+              height: cardHeight !== undefined ? cardHeight : undefined,
+              minHeight: "450px",
+              transition: "height 300ms ease-in-out"
+            }}
+          >
+            {/* Inner div — measured by ResizeObserver */}
+            <div ref={contentRef} className="w-full md:min-h-[450px]">
+              {slides.length === 0 || !activeSlide ? (
+                <EmptyState />
+              ) : (
+                <div
+                  className="w-full h-full"
+                  style={{
+                    opacity: fading ? 0 : 1,
+                    transition: "opacity 300ms ease-in-out"
+                  }}
+                >
+                  <OfferCard slide={activeSlide} />
+                </div>
+              )}
+            </div>
           </div>
+
+          {/* Dots — matching testimonials style */}
           {slides.length > 1 && (
-            <div className="flex items-center justify-center gap-2 pb-5">
+            <div className="flex justify-center gap-1.5 pb-5">
               {slides.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => handleClick(i)}
                   aria-label={`Go to offer ${i + 1}`}
-                  className={[
-                    "rounded-full transition-all duration-300",
-                    active === i ? "bg-orange-600" : "bg-gray-300 dark:bg-gray-600",
-                  ].join(" ")}
-                  style={{
-                    width: "8px",
-                    height: "8px",
-                    boxShadow: active === i ? "0 0 10px rgba(234,88,12,0.5)" : "none",
-                  }}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    active === i
+                      ? "bg-orange-600 w-6"
+                      : "bg-gray-300 dark:bg-gray-600 w-1.5 hover:bg-orange-400"
+                  }`}
                 />
               ))}
             </div>
           )}
-        </div>
+        </motion.div>
       </div>
-
-      <style>{`
-        @keyframes kgp-offer-enter {
-          0% { opacity: 0; transform: translateY(10px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-        .kgp-offer-enter { animation: kgp-offer-enter 320ms ease-out; }
-      `}</style>
     </section>
   );
 }

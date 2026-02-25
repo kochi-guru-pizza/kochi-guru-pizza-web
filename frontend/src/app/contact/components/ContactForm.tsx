@@ -68,6 +68,7 @@ export default function ContactForm() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false, amount: 0.2 }}
             transition={{ duration: 0.6 }}
+            style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
           >
             <span className="inline-block text-orange-600 dark:text-orange-500 font-semibold text-sm uppercase tracking-widest mb-3">
               Send Us a Message
@@ -107,6 +108,7 @@ export default function ContactForm() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false, amount: 0.2 }}
             transition={{ duration: 0.6 }}
+            style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
           >
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md border border-gray-100 dark:border-gray-700 p-8">
               <AnimatePresence mode="wait">
@@ -117,6 +119,10 @@ export default function ContactForm() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.3 }}
+                    style={{
+                      backfaceVisibility: "hidden",
+                      transform: "translateZ(0)"
+                    }}
                     className="flex flex-col items-center justify-center text-center py-12"
                   >
                     <div className="flex items-center justify-center w-20 h-20 rounded-full bg-green-100 dark:bg-green-900/20 mb-6">
@@ -143,6 +149,10 @@ export default function ContactForm() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     onSubmit={handleSubmit}
+                    style={{
+                      backfaceVisibility: "hidden",
+                      transform: "translateZ(0)"
+                    }}
                     className="space-y-5"
                   >
                     {/* Name + Phone */}

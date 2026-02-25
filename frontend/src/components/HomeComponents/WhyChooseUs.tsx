@@ -72,6 +72,7 @@ export default function WhyChooseUs() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.6 }}
+          style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
           className="text-center mb-12"
         >
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
@@ -95,7 +96,11 @@ export default function WhyChooseUs() {
               key={usp.id}
               variants={cardVariants}
               whileHover={{ y: -8, transition: { duration: 0.2 } }}
-              className="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700 p-6"
+              style={{
+                backfaceVisibility: "hidden",
+                transform: "translateZ(0)"
+              }}
+              className="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 dark:border-gray-700 p-6"
             >
               {/* Icon Container */}
               <div className="flex items-center justify-center w-16 h-16 rounded-full bg-linear-to-br from-orange-400 to-orange-600 text-white mb-4 group-hover:scale-110 transition-transform duration-300">

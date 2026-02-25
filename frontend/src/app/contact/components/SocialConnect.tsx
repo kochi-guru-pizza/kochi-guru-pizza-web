@@ -93,6 +93,7 @@ export default function SocialConnect() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.6 }}
+          style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
           className="text-center mb-14"
         >
           <span className="inline-block text-orange-600 dark:text-orange-500 font-semibold text-sm uppercase tracking-widest mb-3">
@@ -122,7 +123,11 @@ export default function SocialConnect() {
               rel={social.name !== "Phone" ? "noopener noreferrer" : undefined}
               variants={cardVariants}
               whileHover={{ y: -6, transition: { duration: 0.2 } }}
-              className={`group flex flex-col items-center text-center bg-white dark:bg-gray-800 rounded-2xl shadow-md border border-gray-100 dark:border-gray-700 p-7 transition-all duration-300 hover:shadow-xl ${social.hoverBg} ${social.hoverBorder}`}
+              style={{
+                backfaceVisibility: "hidden",
+                transform: "translateZ(0)"
+              }}
+              className={`group flex flex-col items-center text-center bg-white dark:bg-gray-800 rounded-2xl shadow-md border border-gray-100 dark:border-gray-700 p-7 transition-shadow duration-300 hover:shadow-xl ${social.hoverBg} ${social.hoverBorder}`}
             >
               <div
                 className={`flex items-center justify-center w-16 h-16 rounded-2xl bg-linear-to-br ${social.gradient} text-white mb-5 shadow-md group-hover:scale-110 transition-transform duration-300`}

@@ -122,6 +122,7 @@ export default function CustomerTestimonials() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.6 }}
+          style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
           className="text-center mb-10"
         >
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">
@@ -180,6 +181,10 @@ export default function CustomerTestimonials() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: false, amount: 0.2 }}
                     transition={{ duration: 0.4, delay: idx * 0.05 }}
+                    style={{
+                      backfaceVisibility: "hidden",
+                      transform: "translateZ(0)"
+                    }}
                     className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow p-6 border border-gray-100 dark:border-gray-700 h-full flex flex-col relative"
                   >
                     {/* Quote Icon */}

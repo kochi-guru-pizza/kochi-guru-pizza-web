@@ -38,6 +38,7 @@ export default function StorySection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false, amount: 0.2 }}
             transition={{ duration: 0.6 }}
+            style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
           >
             <span className="inline-block text-orange-600 dark:text-orange-500 font-semibold text-sm uppercase tracking-widest mb-3">
               Our Story
@@ -75,12 +76,17 @@ export default function StorySection() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: false, amount: 0.2 }}
+            style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
             className="grid grid-cols-2 gap-6"
           >
             {stats.map((stat) => (
               <motion.div
                 key={stat.label}
                 variants={cardVariants}
+                style={{
+                  backfaceVisibility: "hidden",
+                  transform: "translateZ(0)"
+                }}
                 className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 p-6 text-center"
               >
                 <div className="font-heading text-4xl font-bold text-orange-600 dark:text-orange-500 mb-2">

@@ -14,6 +14,7 @@ export default function VisitUsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.6 }}
+          style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
           className="text-center mb-12"
         >
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
@@ -31,9 +32,10 @@ export default function VisitUsSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false, amount: 0.2 }}
             transition={{ duration: 0.6 }}
+            style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
             className="lg:col-span-2 space-y-4"
           >
-            <div className="group bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 p-5 flex gap-4 hover:shadow-xl transition-all duration-300">
+            <div className="group bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 p-5 flex gap-4 hover:shadow-xl transition-shadow duration-300">
               <div className="flex items-center justify-center w-12 h-12 rounded-full bg-linear-to-br from-orange-400 to-orange-600 text-white shrink-0 group-hover:scale-110 transition-transform duration-300">
                 <MapPin className="w-6 h-6" />
               </div>
@@ -49,7 +51,7 @@ export default function VisitUsSection() {
               </div>
             </div>
 
-            <div className="group bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 p-5 flex gap-4 hover:shadow-xl transition-all duration-300">
+            <div className="group bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 p-5 flex gap-4 hover:shadow-xl transition-shadow duration-300">
               <div className="flex items-center justify-center w-12 h-12 rounded-full bg-linear-to-br from-orange-400 to-orange-600 text-white shrink-0 group-hover:scale-110 transition-transform duration-300">
                 <Phone className="w-6 h-6" />
               </div>
@@ -66,7 +68,7 @@ export default function VisitUsSection() {
               </div>
             </div>
 
-            <div className="group bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 p-5 flex gap-4 hover:shadow-xl transition-all duration-300">
+            <div className="group bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 p-5 flex gap-4 hover:shadow-xl transition-shadow duration-300">
               <div className="flex items-center justify-center w-12 h-12 rounded-full bg-linear-to-br from-orange-400 to-orange-600 text-white shrink-0 group-hover:scale-110 transition-transform duration-300">
                 <Clock className="w-6 h-6" />
               </div>
@@ -107,9 +109,10 @@ export default function VisitUsSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false, amount: 0.2 }}
             transition={{ duration: 0.6 }}
+            style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
             className="lg:col-span-3"
           >
-            <div className="rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 h-[420px]">
+            <div className="rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-gray-700 h-[420px]">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.8!2d80.6973356!3d6.150403!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae14bf48d6f7b07%3A0xfe7cb83da3e3b9da!2sKochi%20Guru%20Pizza!5e0!3m2!1sen!2slk!4v1740000000000!5m2!1sen!2slk"
                 width="100%"

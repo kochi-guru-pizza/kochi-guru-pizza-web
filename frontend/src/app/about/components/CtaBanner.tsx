@@ -14,6 +14,7 @@ export default function CtaBanner() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.6 }}
+          style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
           className="bg-linear-to-br from-orange-600 via-orange-500 to-red-500 rounded-2xl p-12 text-center relative overflow-hidden"
         >
           <div className="absolute top-[-20%] left-[-10%] w-[40%] h-[80%] bg-white/10 rounded-full blur-3xl pointer-events-none" />

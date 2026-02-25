@@ -231,14 +231,14 @@ export default function CustomerTestimonials() {
           {/* Navigation Arrows */}
           <button
             onClick={scrollPrev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 translate-x-0 md:-translate-x-5 z-10 p-2 rounded-full! bg-white dark:bg-gray-800 shadow-md hover:shadow-lg hover:bg-orange-50 dark:hover:bg-gray-700 transition-all border border-gray-200 dark:border-gray-600"
+            className="absolute left-0 top-1/2 -translate-y-1/2 translate-x-0 md:-translate-x-5 z-10 p-2 rounded-full! bg-white dark:bg-gray-800 shadow-md hover:shadow-lg hover:bg-orange-50 dark:hover:bg-gray-700 transition-all border border-gray-200 dark:border-gray-600 hidden md:block"
             aria-label="Previous testimonial"
           >
             <ChevronLeft className="w-5 h-5 text-gray-700 dark:text-gray-300" />
           </button>
           <button
             onClick={scrollNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-0 md:translate-x-5 z-10 p-2 rounded-full! bg-white dark:bg-gray-800 shadow-md hover:shadow-lg hover:bg-orange-50 dark:hover:bg-gray-700 transition-all border border-gray-200 dark:border-gray-600"
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-0 md:translate-x-5 z-10 p-2 rounded-full! bg-white dark:bg-gray-800 shadow-md hover:shadow-lg hover:bg-orange-50 dark:hover:bg-gray-700 transition-all border border-gray-200 dark:border-gray-600 hidden md:block"
             aria-label="Next testimonial"
           >
             <ChevronRight className="w-5 h-5 text-gray-700 dark:text-gray-300" />

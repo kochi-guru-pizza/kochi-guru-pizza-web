@@ -26,6 +26,12 @@
   backface-visibility: hidden;
 }
 
+@utility embla-performance {
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
 @utility transition-smooth {
   transition-property:
     color, background-color, border-color, text-decoration-color, fill, stroke,

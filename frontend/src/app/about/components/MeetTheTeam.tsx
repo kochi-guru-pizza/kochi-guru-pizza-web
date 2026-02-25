@@ -61,8 +61,7 @@ export default function MeetTheTeam() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.6 }}
-          style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
-          className="text-center mb-14"
+          className="text-center mb-14 gpu-fix"
         >
           <span className="inline-block text-orange-600 dark:text-orange-500 font-semibold text-sm uppercase tracking-widest mb-3">
             The People Behind the Pizza
@@ -88,11 +87,7 @@ export default function MeetTheTeam() {
               key={member.name}
               variants={cardVariants}
               whileHover={{ y: -8, transition: { duration: 0.2 } }}
-              style={{
-                backfaceVisibility: "hidden",
-                transform: "translateZ(0)"
-              }}
-              className="group relative bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-gray-700 p-8 flex flex-col items-center text-center overflow-hidden"
+              className="group relative bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-colors duration-300 border border-gray-100 dark:border-gray-700 p-8 flex flex-col items-center text-center overflow-hidden gpu-fix"
             >
               {/* Subtle background glow */}
               <div
@@ -134,8 +129,7 @@ export default function MeetTheTeam() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: false, amount: 0.5 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
-          className="text-center text-sm text-gray-400 dark:text-gray-500 mt-10"
+          className="text-center text-sm text-gray-400 dark:text-gray-500 mt-10 gpu-fix"
         >
           Plus our wonderful front-of-house crew who make every visit memorable.
         </motion.p>

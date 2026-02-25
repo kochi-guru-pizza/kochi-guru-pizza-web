@@ -111,14 +111,14 @@ export default function HeroSection() {
       {/* Navigation arrows */}
       <button
         onClick={scrollPrev}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full! bg-white/20 hover:bg-white/40 backdrop-blur-sm transition-all"
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full! bg-white/20 hover:bg-white/40 backdrop-blur-sm transition-all hidden lg:block"
         aria-label="Previous slide"
       >
         <ChevronLeft className="w-6 h-6 text-white" />
       </button>
       <button
         onClick={scrollNext}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full! bg-white/20 hover:bg-white/40 backdrop-blur-sm transition-all"
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full! bg-white/20 hover:bg-white/40 backdrop-blur-sm transition-all hidden lg:block"
         aria-label="Next slide"
       >
         <ChevronRight className="w-6 h-6 text-white" />

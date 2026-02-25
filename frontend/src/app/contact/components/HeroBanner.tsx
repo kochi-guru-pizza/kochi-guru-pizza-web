@@ -17,7 +17,7 @@ export default function HeroBanner() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.6 }}
-          style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
+          className="gpu-fix"
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/20 text-white text-sm font-medium mb-6 backdrop-blur-sm">
             <MessageCircle className="w-4 h-4" />

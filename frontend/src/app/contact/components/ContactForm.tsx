@@ -119,11 +119,7 @@ export default function ContactForm() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.3 }}
-                    style={{
-                      backfaceVisibility: "hidden",
-                      transform: "translateZ(0)"
-                    }}
-                    className="flex flex-col items-center justify-center text-center py-12"
+                    className="flex flex-col items-center justify-center text-center py-12 gpu-fix"
                   >
                     <div className="flex items-center justify-center w-20 h-20 rounded-full bg-green-100 dark:bg-green-900/20 mb-6">
                       <CheckCircle className="w-10 h-10 text-green-600 dark:text-green-400" />
@@ -149,11 +145,7 @@ export default function ContactForm() {
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     onSubmit={handleSubmit}
-                    style={{
-                      backfaceVisibility: "hidden",
-                      transform: "translateZ(0)"
-                    }}
-                    className="space-y-5"
+                    className="space-y-5 gpu-fix"
                   >
                     {/* Name + Phone */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

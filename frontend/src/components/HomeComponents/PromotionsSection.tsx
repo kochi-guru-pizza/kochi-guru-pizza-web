@@ -216,12 +216,11 @@ export default function PromotionsSection() {
     <section className="py-20 md:py-24 bg-white dark:bg-gray-950 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          className="text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.5 }}
-          style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
+          className="text-center mb-12 gpu-fix"
         >
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Special Offers
@@ -234,12 +233,11 @@ export default function PromotionsSection() {
 
         {/* MAIN CARD */}
         <motion.div
-          className="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 dark:border-gray-700"
+          className="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-colors duration-300 overflow-hidden border border-gray-100 dark:border-gray-700 gpu-fix"
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.5, delay: 0.15 }}
-          style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
         >
           {/* Outer container animates height smoothly via measured inner content */}
           <div

@@ -64,6 +64,7 @@ export default function BehindTheScenes() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false, amount: 0.2 }}
             transition={{ duration: 0.6 }}
+            className="gpu-fix"
           >
             <span className="inline-block text-orange-600 dark:text-orange-500 font-semibold text-sm uppercase tracking-widest mb-3">
               Our Process
@@ -91,7 +92,7 @@ export default function BehindTheScenes() {
                 <motion.div
                   key={step.step}
                   variants={itemVariants}
-                  className="flex gap-4 group"
+                  className="flex gap-4 group gpu-fix"
                 >
                   {/* Step number + icon */}
                   <div className="flex flex-col items-center">
@@ -126,7 +127,7 @@ export default function BehindTheScenes() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false, amount: 0.2 }}
             transition={{ duration: 0.6 }}
-            className="grid grid-cols-2 gap-4"
+            className="grid grid-cols-2 gap-4 gpu-fix"
           >
             {/* Large top-left tile */}
             <div className="col-span-2 rounded-2xl overflow-hidden bg-linear-to-br from-orange-500 via-orange-600 to-red-600 aspect-video flex items-center justify-center shadow-xl">

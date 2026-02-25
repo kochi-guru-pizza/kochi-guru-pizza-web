@@ -50,7 +50,7 @@ function FaqItem({
   onToggle: () => void;
 }) {
   return (
-    <div className="border border-gray-100 dark:border-gray-700 rounded-xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow duration-300">
+    <div className="border border-gray-100 dark:border-gray-700 rounded-xl overflow-hidden bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-smooth duration-300">
       <button
         onClick={onToggle}
         className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left"
@@ -106,7 +106,7 @@ export default function FAQ() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-14"
+          className="text-center mb-14 gpu-fix"
         >
           <span className="inline-block text-orange-600 dark:text-orange-500 font-semibold text-sm uppercase tracking-widest mb-3">
             Common Questions
@@ -124,7 +124,7 @@ export default function FAQ() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.1 }}
           transition={{ duration: 0.5 }}
-          className="space-y-3"
+          className="space-y-3 gpu-fix"
         >
           {faqs.map((faq, index) => (
             <FaqItem
@@ -142,7 +142,7 @@ export default function FAQ() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: false, amount: 0.5 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-center text-sm text-gray-400 dark:text-gray-500 mt-10"
+          className="text-center text-sm text-gray-400 dark:text-gray-500 mt-10 gpu-fix"
         >
           Still have a question?{" "}
           <a

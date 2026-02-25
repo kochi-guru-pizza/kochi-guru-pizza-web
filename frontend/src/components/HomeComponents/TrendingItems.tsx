@@ -4,6 +4,7 @@
 import React from "react";
 import Image from "next/image";
 import { ShoppingCart } from "lucide-react";
+import { motion } from "framer-motion";
 
 type TrendingItem = {
   id: number;
@@ -48,7 +49,13 @@ export default function TrendingItems() {
     <section className="py-20 md:py-24 bg-orange-50/30 dark:bg-gray-900 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-12 gpu-fix"
+        >
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Trending Now
           </h2>
@@ -56,14 +63,18 @@ export default function TrendingItems() {
             Discover our most popular items that customers can&apos;t get enough
             of
           </p>
-        </div>
+        </motion.div>
 
         {/* Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-          {trendingItems.map((item) => (
-            <div
+          {trendingItems.map((item, idx) => (
+            <motion.div
               key={item.id}
-              className="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden dark:border dark:border-gray-700"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ duration: 0.4, delay: idx * 0.1 }}
+              className="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-smooth duration-300 overflow-hidden dark:border dark:border-gray-700 gpu-fix"
             >
               {/* Image */}
               <div className="relative h-48 bg-gray-200 dark:bg-gray-700 overflow-hidden">
@@ -99,7 +110,7 @@ export default function TrendingItems() {
                   </button>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

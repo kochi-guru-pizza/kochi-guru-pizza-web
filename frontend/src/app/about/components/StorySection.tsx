@@ -30,7 +30,7 @@ const cardVariants = {
 
 export default function StorySection() {
   return (
-    <section className="py-20 md:py-24 bg-white dark:bg-gray-950 transition-colors duration-300">
+    <section className="py-20 md:py-24 bg-white dark:bg-gray-950 transition-smooth duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <motion.div
@@ -38,6 +38,7 @@ export default function StorySection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false, amount: 0.2 }}
             transition={{ duration: 0.6 }}
+            className="gpu-fix"
           >
             <span className="inline-block text-orange-600 dark:text-orange-500 font-semibold text-sm uppercase tracking-widest mb-3">
               Our Story
@@ -75,13 +76,13 @@ export default function StorySection() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: false, amount: 0.2 }}
-            className="grid grid-cols-2 gap-6"
+            className="grid grid-cols-2 gap-6 gpu-fix"
           >
             {stats.map((stat) => (
               <motion.div
                 key={stat.label}
                 variants={cardVariants}
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 p-6 text-center"
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 p-6 text-center transition-smooth duration-300 gpu-fix"
               >
                 <div className="font-heading text-4xl font-bold text-orange-600 dark:text-orange-500 mb-2">
                   {stat.value}

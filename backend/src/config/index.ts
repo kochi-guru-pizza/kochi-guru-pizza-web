@@ -35,9 +35,9 @@ if (missingEnvVars.length > 0) {
 }
 
 interface Config {
-  PORT: string | number;
+  PORT: number;
   MONGO_DB_URI: string;
-  FRONTEND_URL: string;
+  FRONTEND_URL: string | string[];
   JWT_SECRET: string;
   JWT_EXPIRES_IN: string;
   REFRESH_TOKEN_SECRET: string;
@@ -49,9 +49,13 @@ interface Config {
 }
 
 const config: Config = {
-  PORT: PORT || 5000,
+  PORT: PORT ? Number(PORT) : 5000,
   MONGO_DB_URI: MONGO_DB_URI as string,
-  FRONTEND_URL: FRONTEND_URL as string,
+  FRONTEND_URL: FRONTEND_URL?.includes(",")
+    ? FRONTEND_URL.split(",")
+        .map((url) => url.trim())
+        .filter(Boolean)
+    : (FRONTEND_URL as string),
   JWT_SECRET: JWT_SECRET as string,
   JWT_EXPIRES_IN: JWT_EXPIRES_IN || "1d",
   REFRESH_TOKEN_SECRET: REFRESH_TOKEN_SECRET as string,

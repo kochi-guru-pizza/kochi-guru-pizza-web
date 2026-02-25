@@ -132,15 +132,20 @@ function OfferCard({ slide }: { slide: PromotionSlide }) {
 
         {/* RIGHT FLYER */}
         <div className="col-span-12 md:col-span-7 flex items-center justify-center md:justify-end p-4 md:p-6 order-1 md:order-2">
-          <Image
-            src={slide.imageUrl}
-            alt={slide.title}
-            width={1200}
-            height={800}
-            draggable={false}
-            className="w-full h-auto object-contain md:object-center select-none rounded-lg max-h-64 sm:max-h-80 md:max-h-120"
-            priority
-          />
+          {promotionSlides.map((s, index) => (
+            <Image
+              key={s.imageUrl}
+              src={s.imageUrl}
+              alt={s.title}
+              width={1200}
+              height={800}
+              draggable={false}
+              className={`w-full h-auto object-contain md:object-center select-none rounded-lg max-h-64 sm:max-h-80 md:max-h-120 ${
+                s.imageUrl === slide.imageUrl ? "block" : "hidden"
+              }`}
+              priority={index === 0}
+            />
+          ))}
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 type HeroSlide = {
   imageUrl: string;
@@ -79,7 +80,7 @@ export default function HeroSection() {
           {heroSlides.map((slide, index) => (
             <div
               key={index}
-              className="embla__slide relative flex-[0_0_100%] min-w-0"
+              className="embla__slide relative flex-[0_0_100%] min-w-0 embla-performance"
             >
               {/* Image */}
               <div className="relative w-full h-[90vh]">
@@ -95,14 +96,48 @@ export default function HeroSection() {
               </div>
 
               {/* Text overlay */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 md:px-8">
-                <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4 drop-shadow-lg">
-                  {slide.heading}
-                </h1>
-                <p className="text-lg md:text-2xl text-white/90 max-w-2xl drop-shadow-md">
-                  {slide.subtitle}
-                </p>
-              </div>
+              <AnimatePresence mode="wait">
+                {selectedIndex === index && (
+                  <motion.div
+                    key={`overlay-${index}`}
+                    initial={{ opacity: 1 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.8 }}
+                    className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 md:px-8"
+                  >
+                    <div className="overflow-hidden">
+                      <motion.h1
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{
+                          duration: 0.8,
+                          ease: [0.16, 1, 0.3, 1],
+                          delay: 0.2
+                        }}
+                        className="font-heading text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4 drop-shadow-lg gpu-fix"
+                      >
+                        {slide.heading}
+                      </motion.h1>
+                    </div>
+
+                    <motion.p
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{
+                        duration: 0.8,
+                        ease: [0.16, 1, 0.3, 1],
+                        delay: 0.4
+                      }}
+                      className="text-lg md:text-2xl text-white/90 max-w-2xl drop-shadow-md gpu-fix"
+                    >
+                      {slide.subtitle}
+                    </motion.p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           ))}
         </div>

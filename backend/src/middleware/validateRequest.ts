@@ -10,7 +10,7 @@ export const validateRequest =
         body: req.body,
         query: req.query,
         params: req.params
-      })) as any;
+      })) as { body?: unknown; query?: unknown; params?: unknown };
 
       if (parsed.body) Object.assign(req.body, parsed.body);
       if (parsed.query) Object.assign(req.query, parsed.query);

@@ -1,6 +1,8 @@
+// src/components/HomeComponents/PromotionsSection.tsx
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 
 type PromotionSlide = {
@@ -130,11 +132,14 @@ function OfferCard({ slide }: { slide: PromotionSlide }) {
 
         {/* RIGHT FLYER */}
         <div className="col-span-12 md:col-span-7 flex items-center justify-center md:justify-end p-4 md:p-6 order-1 md:order-2">
-          <img
+          <Image
             src={slide.imageUrl}
             alt={slide.title}
+            width={1200}
+            height={800}
             draggable={false}
-            className="w-full object-contain md:object-center select-none rounded-lg max-h-64 sm:max-h-80 md:max-h-120"
+            className="w-full h-auto object-contain md:object-center select-none rounded-lg max-h-64 sm:max-h-80 md:max-h-120"
+            priority
           />
         </div>
       </div>
@@ -148,7 +153,9 @@ export default function PromotionsSection() {
   const [visible, setVisible] = useState(0);
   const [fading, setFading] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const fadeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const activeRef = useRef(0);
+  const isFadingRef = useRef(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const [cardHeight, setCardHeight] = useState<number | undefined>(undefined);
 
@@ -163,45 +170,43 @@ export default function PromotionsSection() {
     return () => ro.disconnect();
   }, []);
 
-  const goTo = useCallback(
-    (next: number) => {
-      if (fading) return;
-      activeRef.current = next;
-      setActive(next);
-      setFading(true);
-      setTimeout(() => {
-        setVisible(next);
-        setFading(false);
-      }, 300);
-    },
-    [fading]
-  );
+  const goTo = useCallback((next: number) => {
+    if (isFadingRef.current) return;
+
+    if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
+
+    activeRef.current = next;
+    setActive(next);
+    setFading(true);
+    isFadingRef.current = true;
+
+    fadeTimerRef.current = setTimeout(() => {
+      setVisible(next);
+      setFading(false);
+      isFadingRef.current = false;
+      fadeTimerRef.current = null;
+    }, 300);
+  }, []);
 
   const startAuto = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
     if (slides.length === 0) return;
     timerRef.current = setInterval(() => {
       const next = (activeRef.current + 1) % slides.length;
-      activeRef.current = next;
-      setActive(next);
-      setFading(true);
-      setTimeout(() => {
-        setVisible(next);
-        setFading(false);
-      }, 300);
+      goTo(next);
     }, 4500);
-  }, [slides.length]);
+  }, [slides.length, goTo]);
 
   useEffect(() => {
     startAuto();
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
+      if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
     };
   }, [startAuto]);
 
   const handleClick = (i: number) => {
     goTo(i);
-    activeRef.current = i;
     startAuto();
   };
 
@@ -214,8 +219,9 @@ export default function PromotionsSection() {
           className="text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.5 }}
+          style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
         >
           <h2 className="font-heading text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Special Offers
@@ -228,11 +234,12 @@ export default function PromotionsSection() {
 
         {/* MAIN CARD */}
         <motion.div
-          className="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 dark:border-gray-700"
+          className="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 dark:border-gray-700"
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: false, amount: 0.2 }}
           transition={{ duration: 0.5, delay: 0.15 }}
+          style={{ backfaceVisibility: "hidden", transform: "translateZ(0)" }}
         >
           {/* Outer container animates height smoothly via measured inner content */}
           <div

@@ -122,7 +122,7 @@ export default function SocialConnect() {
               rel={social.name !== "Phone" ? "noopener noreferrer" : undefined}
               variants={cardVariants}
               whileHover={{ y: -6, transition: { duration: 0.2 } }}
-              className={`group flex flex-col items-center text-center bg-white dark:bg-gray-800 rounded-2xl shadow-md border border-gray-100 dark:border-gray-700 p-7 transition-colors duration-300 hover:shadow-xl ${social.hoverBg} ${social.hoverBorder} gpu-fix`}
+              className={`group flex flex-col items-center text-center bg-white dark:bg-gray-800 rounded-2xl shadow-md border border-gray-100 dark:border-gray-700 p-7 transition-smooth duration-300 hover:shadow-xl ${social.hoverBg} ${social.hoverBorder} gpu-fix`}
             >
               <div
                 className={`flex items-center justify-center w-16 h-16 rounded-2xl bg-linear-to-br ${social.gradient} text-white mb-5 shadow-md group-hover:scale-110 transition-transform duration-300`}

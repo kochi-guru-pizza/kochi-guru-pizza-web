@@ -87,7 +87,7 @@ export default function MeetTheTeam() {
               key={member.name}
               variants={cardVariants}
               whileHover={{ y: -8, transition: { duration: 0.2 } }}
-              className="group relative bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-colors duration-300 border border-gray-100 dark:border-gray-700 p-8 flex flex-col items-center text-center overflow-hidden gpu-fix"
+              className="group relative bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-smooth duration-300 border border-gray-100 dark:border-gray-700 p-8 flex flex-col items-center text-center overflow-hidden gpu-fix"
             >
               {/* Subtle background glow */}
               <div

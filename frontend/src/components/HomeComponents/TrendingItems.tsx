@@ -74,7 +74,7 @@ export default function TrendingItems() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, amount: 0.2 }}
               transition={{ duration: 0.4, delay: idx * 0.1 }}
-              className="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-colors duration-300 overflow-hidden dark:border dark:border-gray-700 gpu-fix"
+              className="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-smooth duration-300 overflow-hidden dark:border dark:border-gray-700 gpu-fix"
             >
               {/* Image */}
               <div className="relative h-48 bg-gray-200 dark:bg-gray-700 overflow-hidden">

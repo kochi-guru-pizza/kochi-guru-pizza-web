@@ -180,7 +180,7 @@ export default function CustomerTestimonials() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: false, amount: 0.2 }}
                     transition={{ duration: 0.4, delay: idx * 0.05 }}
-                    className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-colors duration-300 p-6 border border-gray-100 dark:border-gray-700 h-full flex flex-col relative gpu-fix"
+                    className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-smooth duration-300 p-6 border border-gray-100 dark:border-gray-700 h-full flex flex-col relative gpu-fix"
                   >
                     {/* Quote Icon */}
                     <Quote className="absolute top-4 right-4 w-8 h-8 text-orange-100 dark:text-orange-900/40" />

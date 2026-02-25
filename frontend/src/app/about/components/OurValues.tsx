@@ -88,7 +88,7 @@ export default function OurValues() {
               key={value.title}
               variants={itemVariants}
               whileHover={{ y: -5, transition: { duration: 0.2 } }}
-              className="group flex gap-5 bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-colors duration-300 border border-gray-100 dark:border-gray-700 p-7 gpu-fix"
+              className="group flex gap-5 bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-smooth duration-300 border border-gray-100 dark:border-gray-700 p-7 gpu-fix"
             >
               <div
                 className={`flex items-center justify-center w-14 h-14 rounded-xl bg-linear-to-br ${value.accent} text-white shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-md`}

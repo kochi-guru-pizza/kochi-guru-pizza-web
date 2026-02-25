@@ -233,7 +233,7 @@ export default function PromotionsSection() {
 
         {/* MAIN CARD */}
         <motion.div
-          className="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-colors duration-300 overflow-hidden border border-gray-100 dark:border-gray-700 gpu-fix"
+          className="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-smooth duration-300 overflow-hidden border border-gray-100 dark:border-gray-700 gpu-fix"
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.2 }}

@@ -25,13 +25,16 @@ export default function ItemImage({ src, alt, category }: ItemImageProps) {
   return (
     <div className="w-full rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800/60">
       {src ? (
-        // Use a normal <img> so it respects the image's natural aspect ratio —
-        // no cropping, no fixed height container.
-        <img
+        // Use Next.js Image with native aspect ratio preservation trick
+        // width/height 0 paired with w-full h-auto makes it scale naturally
+        <Image
           src={src}
           alt={alt}
+          width={0}
+          height={0}
+          sizes="100vw"
           className="w-full h-auto block object-contain"
-          loading="eager"
+          priority
         />
       ) : (
         <div className="w-full aspect-square flex flex-col items-center justify-center gap-3">

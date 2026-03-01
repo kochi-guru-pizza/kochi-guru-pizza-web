@@ -1,17 +1,17 @@
 // src/app/menu/[id]/components/ItemPricing.tsx
-import { MenuItem, IPriceVariant } from "@typings/menu";
+import { MenuItem, IPriceVariant, PizzaSize } from "@typings/menu";
 
 interface ItemPricingProps {
   item: MenuItem;
 }
 
-const SIZE_LABEL: Record<string, string> = {
+const SIZE_LABEL: Record<PizzaSize, string> = {
   large: "Large",
   medium: "Medium",
   small: "Small"
 };
 
-const SIZE_HINT: Record<string, string> = {
+const SIZE_HINT: Record<PizzaSize, string> = {
   large: '14"',
   medium: '10"',
   small: '7"'
@@ -23,7 +23,11 @@ export default function ItemPricing({ item }: ItemPricingProps) {
   if (hasVariants) {
     const sorted = [...item.variants!].sort(
       (a: IPriceVariant, b: IPriceVariant) => {
-        const order: Record<string, number> = { large: 0, medium: 1, small: 2 };
+        const order: Record<PizzaSize, number> = {
+          large: 0,
+          medium: 1,
+          small: 2
+        };
         return order[a.size] - order[b.size];
       }
     );

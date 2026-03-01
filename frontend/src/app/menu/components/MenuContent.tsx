@@ -1,7 +1,7 @@
 // src/app/menu/components/MenuContent.tsx
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -77,9 +77,10 @@ function MenuItemCard({ item }: { item: MenuItem }) {
           <Image
             src={item.image}
             alt={item.name}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
-            unoptimized
+            width={0}
+            height={0}
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
@@ -164,19 +165,31 @@ export default function MenuContent({ grouped }: MenuContentProps) {
       ? availableCategories
       : availableCategories.filter((c) => c === activeCategory);
 
-  const getItems = (cat: MenuCategory): MenuItem[] => {
-    const items = grouped[cat] ?? [];
-    if (!searchQuery.trim()) return items;
-    const q = searchQuery.toLowerCase();
-    return items.filter(
-      (i) =>
-        i.name.toLowerCase().includes(q) ||
-        i.description?.toLowerCase().includes(q)
-    );
-  };
+  // Pre-compute filtered items per category to avoid O(N) operations inside render loops
+  const filteredCategoryMap = React.useMemo(() => {
+    const map = new Map<MenuCategory, MenuItem[]>();
+    const q = searchQuery.trim().toLowerCase();
+
+    for (const cat of visibleCategories) {
+      const items = grouped[cat] ?? [];
+
+      if (!q) {
+        map.set(cat, items);
+      } else {
+        const filtered = items.filter(
+          (i) =>
+            i.name.toLowerCase().includes(q) ||
+            i.description?.toLowerCase().includes(q)
+        );
+        map.set(cat, filtered);
+      }
+    }
+
+    return map;
+  }, [grouped, visibleCategories, searchQuery]);
 
   const filteredCategories = visibleCategories.filter(
-    (cat) => getItems(cat).length > 0
+    (cat) => (filteredCategoryMap.get(cat)?.length ?? 0) > 0
   );
 
   if (availableCategories.length === 0) {
@@ -288,8 +301,10 @@ export default function MenuContent({ grouped }: MenuContentProps) {
                     </div>
                     <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
                     <span className="text-sm text-gray-400 font-medium shrink-0">
-                      {getItems(cat).length}{" "}
-                      {getItems(cat).length === 1 ? "item" : "items"}
+                      {filteredCategoryMap.get(cat)?.length ?? 0}{" "}
+                      {(filteredCategoryMap.get(cat)?.length ?? 0) === 1
+                        ? "item"
+                        : "items"}
                     </span>
                   </div>
 
@@ -301,7 +316,7 @@ export default function MenuContent({ grouped }: MenuContentProps) {
                     viewport={{ once: true, amount: 0.05 }}
                     className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5"
                   >
-                    {getItems(cat).map((item) => (
+                    {(filteredCategoryMap.get(cat) ?? []).map((item) => (
                       <MenuItemCard key={item._id} item={item} />
                     ))}
                   </motion.div>

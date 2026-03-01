@@ -71,6 +71,7 @@ export const createMenuItem = async (
     const {
       name,
       description,
+      longDescription,
       category,
       variants,
       price,
@@ -82,6 +83,7 @@ export const createMenuItem = async (
     const item = new MenuItem({
       name,
       description,
+      longDescription,
       category,
       variants,
       price,
@@ -118,6 +120,7 @@ export const updateMenuItem = async (
     const allowedFields = [
       "name",
       "description",
+      "longDescription",
       "category",
       "variants",
       "price",

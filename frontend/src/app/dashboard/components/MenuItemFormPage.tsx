@@ -42,6 +42,9 @@ export default function MenuItemFormPage({
 
   const [name, setName] = useState(item?.name ?? "");
   const [description, setDescription] = useState(item?.description ?? "");
+  const [longDescription, setLongDescription] = useState(
+    item?.longDescription ?? ""
+  );
   const [category, setCategory] = useState<MenuCategory>(
     item?.category ?? "pizza"
   );
@@ -102,6 +105,7 @@ export default function MenuItemFormPage({
     const payload: CreateMenuItemPayload = {
       name: name.trim(),
       description: description.trim() || undefined,
+      longDescription: longDescription.trim() || undefined,
       category,
       isAvailable,
       sortOrder: Number(sortOrder) || 0,
@@ -190,10 +194,13 @@ export default function MenuItemFormPage({
             </select>
           </div>
 
-          {/* Description */}
+          {/* Short Description */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">
-              Description
+              Short Description
+              <span className="ml-1.5 text-xs font-normal text-gray-400">
+                (shown on menu card — 2 lines max)
+              </span>
             </label>
             <input
               type="text"
@@ -201,6 +208,23 @@ export default function MenuItemFormPage({
               onChange={(e) => setDescription(e.target.value)}
               placeholder="e.g. Chicken, Onion, Green Chilli, Cheese"
               className="w-full px-4 py-2.5 bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all duration-200 text-gray-900 dark:text-white placeholder-gray-400"
+            />
+          </div>
+
+          {/* Long Description */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">
+              Long Description
+              <span className="ml-1.5 text-xs font-normal text-gray-400">
+                (shown on item detail page only)
+              </span>
+            </label>
+            <textarea
+              value={longDescription}
+              onChange={(e) => setLongDescription(e.target.value)}
+              rows={4}
+              placeholder="Describe the item in detail — ingredients, preparation, allergens, etc."
+              className="w-full px-4 py-2.5 bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all duration-200 text-gray-900 dark:text-white placeholder-gray-400 resize-none"
             />
           </div>
 

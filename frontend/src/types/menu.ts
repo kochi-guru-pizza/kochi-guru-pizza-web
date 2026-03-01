@@ -23,6 +23,7 @@ export interface MenuItem {
   _id: string;
   name: string;
   description?: string;
+  longDescription?: string;
   category: MenuCategory;
   variants?: IPriceVariant[];
   price?: number;
@@ -40,6 +41,7 @@ export interface MenuListResponse {
 export interface CreateMenuItemPayload {
   name: string;
   description?: string;
+  longDescription?: string;
   category: MenuCategory;
   variants?: IPriceVariant[];
   price?: number;

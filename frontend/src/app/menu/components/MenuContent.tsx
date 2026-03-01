@@ -79,7 +79,7 @@ function MenuItemCard({ item }: { item: MenuItem }) {
             alt={item.name}
             width={0}
             height={0}
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
@@ -308,13 +308,13 @@ export default function MenuContent({ grouped }: MenuContentProps) {
                     </span>
                   </div>
 
-                  {/* 4-column card grid */}
+                  {/* Responsive grid: 1 col mobile, 2 col sm, 3 col lg, 4 col xl */}
                   <motion.div
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.05 }}
-                    className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5"
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
                   >
                     {(filteredCategoryMap.get(cat) ?? []).map((item) => (
                       <MenuItemCard key={item._id} item={item} />

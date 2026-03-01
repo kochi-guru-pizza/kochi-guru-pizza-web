@@ -24,6 +24,7 @@ export const createMenuItemSchema = z.object({
     .object({
       name: z.string().min(1, "Name is required").trim(),
       description: z.string().trim().optional(),
+      longDescription: z.string().trim().optional(),
       category: categoryEnum,
       variants: z.array(priceVariantSchema).optional(),
       price: z.number().min(0, "Price must be non-negative").optional(),
@@ -63,6 +64,7 @@ export const updateMenuItemSchema = z.object({
     .object({
       name: z.string().min(1, "Name is required").trim().optional(),
       description: z.string().trim().optional(),
+      longDescription: z.string().trim().optional(),
       category: categoryEnum.optional(),
       variants: z.array(priceVariantSchema).optional(),
       price: z.number().min(0, "Price must be non-negative").optional(),

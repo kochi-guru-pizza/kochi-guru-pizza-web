@@ -13,7 +13,6 @@ import {
   CATEGORY_LABELS,
   CATEGORIES,
   VARIANT_CATEGORIES,
-  IPriceVariant,
   PizzaSize
 } from "@typings/menu";
 
@@ -28,10 +27,10 @@ const SIZE_OPTIONS: { value: PizzaSize; label: string }[] = [
   { value: "small", label: "Small" }
 ];
 
-const DEFAULT_VARIANTS: IPriceVariant[] = [
-  { size: "large", price: 0 },
-  { size: "medium", price: 0 },
-  { size: "small", price: 0 }
+const DEFAULT_VARIANTS: { size: PizzaSize; price: string }[] = [
+  { size: "large", price: "" },
+  { size: "medium", price: "" },
+  { size: "small", price: "" }
 ];
 
 export default function MenuItemFormPage({
@@ -51,9 +50,11 @@ export default function MenuItemFormPage({
   const [price, setPrice] = useState<string>(
     item?.price !== undefined ? String(item.price) : ""
   );
-  const [variants, setVariants] = useState<IPriceVariant[]>(
+  const [variants, setVariants] = useState<
+    { size: PizzaSize; price: string }[]
+  >(
     item?.variants && item.variants.length > 0
-      ? item.variants
+      ? item.variants.map((v) => ({ size: v.size, price: String(v.price) }))
       : DEFAULT_VARIANTS
   );
   const [isAvailable, setIsAvailable] = useState(item?.isAvailable ?? true);
@@ -75,9 +76,7 @@ export default function MenuItemFormPage({
 
   const updateVariantPrice = (size: PizzaSize, value: string) => {
     setVariants((prev) =>
-      prev.map((v) =>
-        v.size === size ? { ...v, price: Number(value) || 0 } : v
-      )
+      prev.map((v) => (v.size === size ? { ...v, price: value } : v))
     );
   };
 
@@ -90,7 +89,7 @@ export default function MenuItemFormPage({
     }
 
     if (isVariantCategory) {
-      const hasInvalidVariant = variants.some((v) => v.price <= 0);
+      const hasInvalidVariant = variants.some((v) => Number(v.price) <= 0);
       if (hasInvalidVariant) {
         toast.error("All variant prices must be greater than 0");
         return;
@@ -113,7 +112,10 @@ export default function MenuItemFormPage({
     };
 
     if (isVariantCategory) {
-      payload.variants = variants;
+      payload.variants = variants.map((v) => ({
+        size: v.size,
+        price: Number(v.price) || 0
+      }));
     } else {
       payload.price = Number(price);
     }
@@ -254,10 +256,11 @@ export default function MenuItemFormPage({
                         <input
                           type="number"
                           min={0}
-                          value={variant?.price ?? 0}
+                          value={variant?.price ?? ""}
                           onChange={(e) =>
                             updateVariantPrice(sizeOpt.value, e.target.value)
                           }
+                          placeholder="0"
                           className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all duration-200 text-gray-900 dark:text-white"
                         />
                       </div>

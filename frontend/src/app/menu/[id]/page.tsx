@@ -45,7 +45,7 @@ export default async function MenuItemDetailPage({ params }: Props) {
     <>
       <Header />
 
-      <main className="min-h-screen bg-white dark:bg-gray-950">
+      <main className="pb-32 bg-white dark:bg-gray-950">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
           {/* Back to menu — always at the top */}
           <Link

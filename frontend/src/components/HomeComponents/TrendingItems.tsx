@@ -4,6 +4,8 @@
 import React from "react";
 import Image from "next/image";
 import { ShoppingCart } from "lucide-react";
+import ScrollAnimatedList from "@components/ScrollAnimatedList";
+import ScrollAnimatedItem from "@components/ScrollAnimatedItem";
 import { motion } from "framer-motion";
 
 type TrendingItem = {
@@ -66,14 +68,10 @@ export default function TrendingItems() {
         </motion.div>
 
         {/* Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-          {trendingItems.map((item, idx) => (
-            <motion.div
+        <ScrollAnimatedList className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          {trendingItems.map((item) => (
+            <ScrollAnimatedItem
               key={item.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, amount: 0.2 }}
-              transition={{ duration: 0.4, delay: idx * 0.1 }}
               className="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-smooth duration-300 overflow-hidden dark:border dark:border-gray-700 gpu-fix"
             >
               {/* Image */}
@@ -110,9 +108,9 @@ export default function TrendingItems() {
                   </button>
                 </div>
               </div>
-            </motion.div>
+            </ScrollAnimatedItem>
           ))}
-        </div>
+        </ScrollAnimatedList>
       </div>
     </section>
   );

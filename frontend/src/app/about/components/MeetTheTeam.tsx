@@ -4,6 +4,8 @@
 import React from "react";
 import { ChefHat, Flame, Heart } from "lucide-react";
 import { motion } from "framer-motion";
+import ScrollAnimatedList from "@components/ScrollAnimatedList";
+import ScrollAnimatedItem from "@components/ScrollAnimatedItem";
 
 const team = [
   {
@@ -35,23 +37,6 @@ const team = [
   }
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 }
-  }
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.55, ease: "easeOut" as const }
-  }
-};
-
 export default function MeetTheTeam() {
   return (
     <section className="py-20 md:py-24 bg-white dark:bg-gray-950 transition-colors duration-300">
@@ -75,53 +60,47 @@ export default function MeetTheTeam() {
           </p>
         </motion.div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.15 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-7"
-        >
+        <ScrollAnimatedList className="grid grid-cols-1 md:grid-cols-3 gap-7">
           {team.map((member) => (
-            <motion.div
-              key={member.name}
-              variants={cardVariants}
-              whileHover={{ y: -8, transition: { duration: 0.2 } }}
-              className="group relative bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-smooth duration-300 border border-gray-100 dark:border-gray-700 p-8 flex flex-col items-center text-center overflow-hidden gpu-fix"
-            >
-              {/* Subtle background glow */}
-              <div
-                className={`absolute top-0 left-0 right-0 h-1 bg-linear-to-r ${member.gradient} opacity-80`}
-              />
-
-              {/* Avatar */}
-              <div
-                className={`flex items-center justify-center w-20 h-20 rounded-full bg-linear-to-br ${member.gradient} text-white text-2xl font-bold font-heading mb-5 shadow-lg group-hover:scale-105 transition-transform duration-300`}
+            <ScrollAnimatedItem key={member.name} className="h-full">
+              <motion.div
+                whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                className="group relative bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-smooth duration-300 border border-gray-100 dark:border-gray-700 p-8 flex flex-col items-center text-center overflow-hidden gpu-fix h-full"
               >
-                {member.initials}
-              </div>
+                {/* Subtle background glow */}
+                <div
+                  className={`absolute top-0 left-0 right-0 h-1 bg-linear-to-r ${member.gradient} opacity-80`}
+                />
 
-              {/* Name & Role */}
-              <h3 className="font-heading text-xl font-bold text-gray-900 dark:text-white mb-1">
-                {member.name}
-              </h3>
-              <div className="inline-flex items-center gap-1.5 text-orange-600 dark:text-orange-500 text-sm font-semibold mb-5">
-                {member.icon}
-                {member.role}
-              </div>
+                {/* Avatar */}
+                <div
+                  className={`flex items-center justify-center w-20 h-20 rounded-full bg-linear-to-br ${member.gradient} text-white text-2xl font-bold font-heading mb-5 shadow-lg group-hover:scale-105 transition-transform duration-300`}
+                >
+                  {member.initials}
+                </div>
 
-              {/* Quote */}
-              <div className="relative">
-                <span className="absolute -top-2 -left-1 text-4xl text-orange-200 dark:text-orange-900/50 font-serif leading-none select-none">
-                  &ldquo;
-                </span>
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed italic pl-4">
-                  {member.quote}
-                </p>
-              </div>
-            </motion.div>
+                {/* Name & Role */}
+                <h3 className="font-heading text-xl font-bold text-gray-900 dark:text-white mb-1">
+                  {member.name}
+                </h3>
+                <div className="inline-flex items-center gap-1.5 text-orange-600 dark:text-orange-500 text-sm font-semibold mb-5">
+                  {member.icon}
+                  {member.role}
+                </div>
+
+                {/* Quote */}
+                <div className="relative">
+                  <span className="absolute -top-2 -left-1 text-4xl text-orange-200 dark:text-orange-900/50 font-serif leading-none select-none">
+                    &ldquo;
+                  </span>
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed italic pl-4">
+                    {member.quote}
+                  </p>
+                </div>
+              </motion.div>
+            </ScrollAnimatedItem>
           ))}
-        </motion.div>
+        </ScrollAnimatedList>
 
         {/* Bottom note */}
         <motion.p

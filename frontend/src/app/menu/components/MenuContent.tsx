@@ -13,6 +13,8 @@ import {
   CATEGORIES
 } from "@typings/menu";
 import { UtensilsCrossed, Search, ChevronRight } from "lucide-react";
+import ScrollAnimatedList from "@components/ScrollAnimatedList";
+import ScrollAnimatedItem from "@components/ScrollAnimatedItem";
 
 interface MenuContentProps {
   grouped: Partial<Record<MenuCategory, MenuItem[]>>;
@@ -29,16 +31,6 @@ const CATEGORY_ICONS: Record<MenuCategory, string> = {
   mojito: "🍹",
   soft_drinks: "🧃",
   add_on: "✨"
-};
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.06 } }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.32 } }
 };
 
 function MenuItemCard({ item }: { item: MenuItem }) {
@@ -64,10 +56,7 @@ function MenuItemCard({ item }: { item: MenuItem }) {
       : null;
 
   return (
-    <motion.div
-      variants={itemVariants}
-      className="group bg-white dark:bg-gray-900 rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 flex flex-col"
-    >
+    <div className="group bg-white dark:bg-gray-900 rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 flex flex-col h-full">
       {/* Image */}
       <Link
         href={`/menu/${item._id}`}
@@ -149,7 +138,7 @@ function MenuItemCard({ item }: { item: MenuItem }) {
           </Link>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -292,7 +281,7 @@ export default function MenuContent({ grouped }: MenuContentProps) {
                   transition={{ duration: 0.3 }}
                 >
                   {/* Category heading */}
-                  <div className="flex items-center gap-4 mb-6">
+                  <ScrollAnimatedItem className="flex items-center gap-4 mb-6">
                     <div className="flex items-center gap-3">
                       <span className="text-3xl">{CATEGORY_ICONS[cat]}</span>
                       <h2 className="font-heading text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
@@ -306,20 +295,16 @@ export default function MenuContent({ grouped }: MenuContentProps) {
                         ? "item"
                         : "items"}
                     </span>
-                  </div>
+                  </ScrollAnimatedItem>
 
                   {/* Responsive grid: 1 col mobile, 2 col sm, 3 col lg, 4 col xl */}
-                  <motion.div
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.05 }}
-                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
-                  >
+                  <ScrollAnimatedList className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                     {(filteredCategoryMap.get(cat) ?? []).map((item) => (
-                      <MenuItemCard key={item._id} item={item} />
+                      <ScrollAnimatedItem key={item._id} className="h-full">
+                        <MenuItemCard item={item} />
+                      </ScrollAnimatedItem>
                     ))}
-                  </motion.div>
+                  </ScrollAnimatedList>
                 </motion.div>
               ))
             )}

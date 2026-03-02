@@ -91,7 +91,7 @@ const Header: React.FC = () => {
   const [isVisible, setIsVisible] = useState(true);
   const lastYRef = React.useRef(0);
   const directionRef = React.useRef<"up" | "down">("up");
-  const lastScrollYRef = React.useRef(0);
+  const lastScrollYRef = React.useRef(0); // Track previous scroll position for direction detection
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     // Never hide the header while the mobile menu is open
@@ -99,19 +99,26 @@ const Header: React.FC = () => {
 
     const currentScrollY = latest;
     const previousScrollY = lastScrollYRef.current;
+
+    // Determine current direction
     const currentDirection = currentScrollY > previousScrollY ? "down" : "up";
+
+    // Update last scroll position
     lastScrollYRef.current = currentScrollY;
 
+    // Check if direction changed
     if (currentDirection !== directionRef.current) {
       directionRef.current = currentDirection;
       lastYRef.current = currentScrollY;
     }
 
+    // Always show at the top
     if (currentScrollY < 64) {
       setIsVisible(true);
       return;
     }
 
+    // Caclulate delta from the anchor point (lastXRef)
     const delta = Math.abs(currentScrollY - lastYRef.current);
 
     if (currentDirection === "down" && delta > 100) {
@@ -184,11 +191,11 @@ const Header: React.FC = () => {
             {/* Right Side (Opening Hours + Cart + Profile/Auth) */}
             <div className="hidden md:flex items-center gap-3">
               {/* Opening hours */}
-              <div className="flex items-center gap-2 rounded-full border border-gray-200/60 dark:border-gray-800 px-3 py-2">
+              <div className="flex items-center gap-2 rounded-full border border-gray-200/50 dark:border-gray-800/50 bg-gray-200/20 dark:bg-gray-800/20 px-3 py-2">
                 <Clock className="w-4 h-4 text-orange-600 dark:text-orange-500" />
                 <div className="leading-tight">
                   <p className="text-xs font-semibold text-gray-900 dark:text-gray-100">
-                    10AM – 10PM
+                    10AM - 10PM
                   </p>
                   <p className="text-[11px] text-gray-500 dark:text-gray-400 -mt-0.5">
                     Daily
@@ -271,16 +278,17 @@ const Header: React.FC = () => {
                                   {user.email}
                                 </p>
                               </div>
-                              <Link
+                              {/* <Link
                                 href="/orders"
                                 onClick={() => setDropdownOpen(false)}
                                 className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-orange-50 dark:hover:bg-orange-900/10 hover:text-orange-700 dark:hover:text-orange-400 transition-colors"
                               >
                                 <ShoppingCart className="w-4 h-4" />
                                 My Orders
-                              </Link>
+                              </Link> */}
                               {(user.role === "admin" ||
                                 user.role === "staff") && (
+                                <>
                                   <Link
                                     href="/dashboard"
                                     onClick={() => setDropdownOpen(false)}
@@ -289,8 +297,10 @@ const Header: React.FC = () => {
                                     <LayoutDashboard className="w-4 h-4" />
                                     Dashboard
                                   </Link>
-                                )}
-                              <div className="h-px bg-gray-100 dark:bg-gray-800 my-1" />
+                                  <div className="h-px bg-gray-100 dark:bg-gray-800 my-1" />
+                                </>
+                              )}
+
                               <button
                                 onClick={() => {
                                   logout();
@@ -388,16 +398,16 @@ const Header: React.FC = () => {
               </Link>
 
               {/* Opening hours + Cart (mobile quick actions) */}
-              <div className="px-4 pt-2">
+              {/* <div className="px-4 pt-2">
                 <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-2 rounded-full border border-gray-200/60 dark:border-gray-800 px-3 py-2">
+                  <div className="flex items-center gap-2 rounded-full border border-gray-200/50 dark:border-gray-800/50 bg-gray-200/20 dark:bg-gray-800/20 px-3 py-2">
                     <Clock className="w-4 h-4 text-orange-600 dark:text-orange-500" />
                     <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                      10AM – 10PM daily
+                      10AM - 10PM daily
                     </span>
                   </div>
 
-                  {/* <Link
+                  <Link
                     href="/cart"
                     onClick={() => setMobileMenuOpen(false)}
                     className="flex items-center gap-2 rounded-xl border border-gray-200/60 dark:border-gray-800 bg-white/60 dark:bg-gray-900/50 backdrop-blur px-3 py-2 hover:bg-gray-100/70 dark:hover:bg-gray-800/60 transition-colors"
@@ -406,9 +416,9 @@ const Header: React.FC = () => {
                     <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                       Cart
                     </span>
-                  </Link> */}
+                  </Link>
                 </div>
-              </div>
+              </div> */}
 
               <div className="h-px bg-gray-100 dark:bg-gray-800 my-4 mx-4" />
 
@@ -440,13 +450,13 @@ const Header: React.FC = () => {
                       </div>
                     </div>
 
-                    <Link
+                    {/* <Link
                       href="/orders"
                       className="flex items-center gap-3 px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-orange-50 dark:hover:bg-orange-900/10 hover:text-orange-600 dark:hover:text-orange-500 rounded-xl transition-colors"
                     >
                       <ShoppingCart className="w-5 h-5" />
                       My Orders
-                    </Link>
+                    </Link> */}
                     {(user.role === "admin" || user.role === "staff") && (
                       <Link
                         href="/dashboard"
@@ -508,8 +518,9 @@ const Header: React.FC = () => {
                     <span className="font-medium">Appearance</span>
                   </div>
                   <ChevronDown
-                    className={`w-5 h-5 transition-transform duration-200 ${isThemeExpanded ? "rotate-180" : ""
-                      }`}
+                    className={`w-5 h-5 transition-transform duration-200 ${
+                      isThemeExpanded ? "rotate-180" : ""
+                    }`}
                   />
                 </button>
 
@@ -525,30 +536,33 @@ const Header: React.FC = () => {
                     >
                       <button
                         onClick={() => setTheme("light")}
-                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${theme === "light"
-                          ? "bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-500"
-                          : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50"
-                          }`}
+                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                          theme === "light"
+                            ? "bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-500"
+                            : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                        }`}
                       >
                         <Sun className="w-4 h-4" />
                         Light
                       </button>
                       <button
                         onClick={() => setTheme("dark")}
-                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${theme === "dark"
-                          ? "bg-gray-800 text-white"
-                          : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50"
-                          }`}
+                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                          theme === "dark"
+                            ? "bg-gray-800 text-white"
+                            : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                        }`}
                       >
                         <Moon className="w-4 h-4" />
                         Dark
                       </button>
                       <button
                         onClick={() => setTheme("system")}
-                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${theme === "system"
-                          ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-500"
-                          : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50"
-                          }`}
+                        className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                          theme === "system"
+                            ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-500"
+                            : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                        }`}
                       >
                         <Monitor className="w-4 h-4" />
                         System

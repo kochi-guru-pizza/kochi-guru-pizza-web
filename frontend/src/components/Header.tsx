@@ -5,6 +5,7 @@ import React, { useState, useRef, useEffect } from "react";
 import ReactDOM from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   motion,
   AnimatePresence,
@@ -27,9 +28,17 @@ import {
 } from "lucide-react";
 import { useTheme } from "@contexts/ThemeContext";
 
+const NavLinks = [
+  { href: "/", label: "Home" },
+  { href: "/menu", label: "Menu" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" }
+] as const;
+
 const Header: React.FC = () => {
   const { user, logout, loading } = useAuth();
   const { theme, setTheme } = useTheme();
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isThemeExpanded, setIsThemeExpanded] = useState(false);
@@ -162,30 +171,23 @@ const Header: React.FC = () => {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-8">
-              <Link
-                href="/"
-                className="text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-500 font-medium transition-colors"
-              >
-                Home
-              </Link>
-              <Link
-                href="/menu"
-                className="text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-500 font-medium transition-colors"
-              >
-                Menu
-              </Link>
-              <Link
-                href="/about"
-                className="text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-500 font-medium transition-colors"
-              >
-                About
-              </Link>
-              <Link
-                href="/contact"
-                className="text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-500 font-medium transition-colors"
-              >
-                Contact
-              </Link>
+              {NavLinks.map(({ href, label }) => {
+                const isActive = pathname === href;
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    className={`group relative font-medium transition-colors ${
+                      isActive
+                        ? "text-orange-600 dark:text-orange-500"
+                        : "text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-500"
+                    }`}
+                  >
+                    {label}
+                    <span className="absolute -bottom-0.5 left-0 h-0.5 bg-orange-500 transition-[width] duration-300 w-0 group-hover:w-full" />
+                  </Link>
+                );
+              })}
             </nav>
 
             {/* Right Side (Opening Hours + Cart + Profile/Auth) */}
@@ -372,30 +374,20 @@ const Header: React.FC = () => {
             className="fixed top-16 left-0 w-full md:hidden border-t border-gray-100 dark:border-gray-800 bg-white/75 dark:bg-gray-900/75 backdrop-blur-lg shadow-lg z-40 overflow-y-auto max-h-[calc(100vh-4rem)]"
           >
             <nav className="px-4 py-6 space-y-1">
-              <Link
-                href="/"
-                className="block px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-orange-50 dark:hover:bg-orange-900/10 hover:text-orange-600 dark:hover:text-orange-500 rounded-xl transition-colors"
-              >
-                Home
-              </Link>
-              <Link
-                href="/menu"
-                className="block px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-orange-50 dark:hover:bg-orange-900/10 hover:text-orange-600 dark:hover:text-orange-500 rounded-xl transition-colors"
-              >
-                Menu
-              </Link>
-              <Link
-                href="/about"
-                className="block px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-orange-50 dark:hover:bg-orange-900/10 hover:text-orange-600 dark:hover:text-orange-500 rounded-xl transition-colors"
-              >
-                About
-              </Link>
-              <Link
-                href="/contact"
-                className="block px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-orange-50 dark:hover:bg-orange-900/10 hover:text-orange-600 dark:hover:text-orange-500 rounded-xl transition-colors"
-              >
-                Contact
-              </Link>
+              {NavLinks.map(({ href, label }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block px-4 py-3 text-base font-medium rounded-xl transition-colors hover:bg-orange-50 dark:hover:bg-orange-900/10 hover:text-orange-600 dark:hover:text-orange-500 ${
+                    pathname === href
+                      ? "text-orange-600 dark:text-orange-500"
+                      : "text-gray-700 dark:text-gray-200"
+                  }`}
+                >
+                  {label}
+                </Link>
+              ))}
 
               {/* Opening hours + Cart (mobile quick actions) */}
               {/* <div className="px-4 pt-2">

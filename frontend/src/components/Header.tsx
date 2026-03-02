@@ -118,7 +118,7 @@ const Header: React.FC = () => {
     // Check if direction changed
     if (currentDirection !== directionRef.current) {
       directionRef.current = currentDirection;
-      lastYRef.current = currentScrollY;
+      lastYRef.current = currentScrollY; // Reset anchor point on direction change
     }
 
     // Always show at the top
@@ -172,7 +172,8 @@ const Header: React.FC = () => {
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-8">
               {NavLinks.map(({ href, label }) => {
-                const isActive = pathname === href;
+                const isActive =
+                  pathname === href || pathname.startsWith(`${href}/`);
                 return (
                   <Link
                     key={href}

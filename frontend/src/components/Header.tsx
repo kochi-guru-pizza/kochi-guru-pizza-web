@@ -375,20 +375,24 @@ const Header: React.FC = () => {
             className="fixed top-16 left-0 w-full md:hidden border-t border-gray-100 dark:border-gray-800 bg-white/75 dark:bg-gray-900/75 backdrop-blur-lg shadow-lg z-40 overflow-y-auto max-h-[calc(100vh-4rem)]"
           >
             <nav className="px-4 py-6 space-y-1">
-              {NavLinks.map(({ href, label }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`block px-4 py-3 text-base font-medium rounded-xl transition-colors hover:bg-orange-50 dark:hover:bg-orange-900/10 hover:text-orange-600 dark:hover:text-orange-500 ${
-                    pathname === href
-                      ? "text-orange-600 dark:text-orange-500"
-                      : "text-gray-700 dark:text-gray-200"
-                  }`}
-                >
-                  {label}
-                </Link>
-              ))}
+              {NavLinks.map(({ href, label }) => {
+                const isActive =
+                  pathname === href || pathname.startsWith(`${href}/`);
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`block px-4 py-3 text-base font-medium rounded-xl transition-colors hover:bg-orange-50 dark:hover:bg-orange-900/10 hover:text-orange-600 dark:hover:text-orange-500 ${
+                      isActive
+                        ? "text-orange-600 dark:text-orange-500"
+                        : "text-gray-700 dark:text-gray-200"
+                    }`}
+                  >
+                    {label}
+                  </Link>
+                );
+              })}
 
               {/* Opening hours + Cart (mobile quick actions) */}
               {/* <div className="px-4 pt-2">

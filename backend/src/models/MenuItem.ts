@@ -23,6 +23,7 @@ export interface IPriceVariant {
 export interface IMenuItem extends Document {
   name: string;
   description?: string;
+  longDescription?: string;
   category: MenuCategory;
   // For items with size variants (e.g. pizza, pizza add-ons)
   variants?: IPriceVariant[];
@@ -59,6 +60,10 @@ const MenuItemSchema = new Schema<IMenuItem>(
       trim: true
     },
     description: {
+      type: String,
+      trim: true
+    },
+    longDescription: {
       type: String,
       trim: true
     },

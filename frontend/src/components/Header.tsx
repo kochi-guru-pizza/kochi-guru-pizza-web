@@ -5,6 +5,7 @@ import React, { useState, useRef, useEffect } from "react";
 import ReactDOM from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   motion,
   AnimatePresence,
@@ -16,7 +17,8 @@ import {
   Menu,
   X,
   User,
-  ShoppingBag,
+  ShoppingCart,
+  Clock,
   LayoutDashboard,
   LogOut,
   ChevronDown,
@@ -26,9 +28,17 @@ import {
 } from "lucide-react";
 import { useTheme } from "@contexts/ThemeContext";
 
+const NavLinks = [
+  { href: "/", label: "Home" },
+  { href: "/menu", label: "Menu" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" }
+] as const;
+
 const Header: React.FC = () => {
   const { user, logout, loading } = useAuth();
   const { theme, setTheme } = useTheme();
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isThemeExpanded, setIsThemeExpanded] = useState(false);
@@ -161,34 +171,54 @@ const Header: React.FC = () => {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-8">
-              <Link
-                href="/"
-                className="text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-500 font-medium transition-colors"
-              >
-                Home
-              </Link>
-              <Link
-                href="/menu"
-                className="text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-500 font-medium transition-colors"
-              >
-                Menu
-              </Link>
-              <Link
-                href="/about"
-                className="text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-500 font-medium transition-colors"
-              >
-                About
-              </Link>
-              <Link
-                href="/contact"
-                className="text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-500 font-medium transition-colors"
-              >
-                Contact
-              </Link>
+              {NavLinks.map(({ href, label }) => {
+                const isActive =
+                  pathname === href || pathname.startsWith(`${href}/`);
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    className={`group relative font-medium transition-colors ${
+                      isActive
+                        ? "text-orange-600 dark:text-orange-500"
+                        : "text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-500"
+                    }`}
+                  >
+                    {label}
+                    <span className="absolute -bottom-0.5 left-0 h-0.5 bg-orange-500 transition-[width] duration-300 w-0 group-hover:w-full" />
+                  </Link>
+                );
+              })}
             </nav>
 
-            {/* Auth Section */}
-            <div className="hidden md:flex items-center gap-4">
+            {/* Right Side (Opening Hours + Cart + Profile/Auth) */}
+            <div className="hidden md:flex items-center gap-3">
+              {/* Opening hours */}
+              <div className="flex items-center gap-2 rounded-full border border-gray-200/50 dark:border-gray-800/50 bg-gray-200/20 dark:bg-gray-800/20 px-3 py-2">
+                <Clock className="w-4 h-4 text-orange-600 dark:text-orange-500" />
+                <div className="leading-tight">
+                  <p className="text-xs font-semibold text-gray-900 dark:text-gray-100">
+                    10AM - 10PM
+                  </p>
+                  <p className="text-[11px] text-gray-500 dark:text-gray-400 -mt-0.5">
+                    Daily
+                  </p>
+                </div>
+              </div>
+              {/* <Link
+                href="/cart"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-2 rounded-full border border-gray-200/60 dark:border-gray-800 bg-white/60 dark:bg-gray-900/50 backdrop-blur px-3 py-2 shadow-sm"
+              >
+                <ShoppingCart className="w-5 h-5 text-orange-600 dark:text-orange-500" />
+
+                <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                  Cart
+                </span>
+              </Link> */}
+
+              <div className="h-7 w-px bg-gray-200/70 dark:bg-gray-800" />
+
               {!loading ? (
                 user ? (
                   <div className="relative">
@@ -251,26 +281,29 @@ const Header: React.FC = () => {
                                   {user.email}
                                 </p>
                               </div>
-                              <Link
+                              {/* <Link
                                 href="/orders"
                                 onClick={() => setDropdownOpen(false)}
                                 className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-orange-50 dark:hover:bg-orange-900/10 hover:text-orange-700 dark:hover:text-orange-400 transition-colors"
                               >
-                                <ShoppingBag className="w-4 h-4" />
+                                <ShoppingCart className="w-4 h-4" />
                                 My Orders
-                              </Link>
+                              </Link> */}
                               {(user.role === "admin" ||
                                 user.role === "staff") && (
-                                <Link
-                                  href="/dashboard"
-                                  onClick={() => setDropdownOpen(false)}
-                                  className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-orange-50 dark:hover:bg-orange-900/10 hover:text-orange-700 dark:hover:text-orange-400 transition-colors"
-                                >
-                                  <LayoutDashboard className="w-4 h-4" />
-                                  Dashboard
-                                </Link>
+                                <>
+                                  <Link
+                                    href="/dashboard"
+                                    onClick={() => setDropdownOpen(false)}
+                                    className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-orange-50 dark:hover:bg-orange-900/10 hover:text-orange-700 dark:hover:text-orange-400 transition-colors"
+                                  >
+                                    <LayoutDashboard className="w-4 h-4" />
+                                    Dashboard
+                                  </Link>
+                                  <div className="h-px bg-gray-100 dark:bg-gray-800 my-1" />
+                                </>
                               )}
-                              <div className="h-px bg-gray-100 dark:bg-gray-800 my-1" />
+
                               <button
                                 onClick={() => {
                                   logout();
@@ -342,30 +375,47 @@ const Header: React.FC = () => {
             className="fixed top-16 left-0 w-full md:hidden border-t border-gray-100 dark:border-gray-800 bg-white/75 dark:bg-gray-900/75 backdrop-blur-lg shadow-lg z-40 overflow-y-auto max-h-[calc(100vh-4rem)]"
           >
             <nav className="px-4 py-6 space-y-1">
-              <Link
-                href="/"
-                className="block px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-orange-50 dark:hover:bg-orange-900/10 hover:text-orange-600 dark:hover:text-orange-500 rounded-xl transition-colors"
-              >
-                Home
-              </Link>
-              <Link
-                href="/menu"
-                className="block px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-orange-50 dark:hover:bg-orange-900/10 hover:text-orange-600 dark:hover:text-orange-500 rounded-xl transition-colors"
-              >
-                Menu
-              </Link>
-              <Link
-                href="/about"
-                className="block px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-orange-50 dark:hover:bg-orange-900/10 hover:text-orange-600 dark:hover:text-orange-500 rounded-xl transition-colors"
-              >
-                About
-              </Link>
-              <Link
-                href="/contact"
-                className="block px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-orange-50 dark:hover:bg-orange-900/10 hover:text-orange-600 dark:hover:text-orange-500 rounded-xl transition-colors"
-              >
-                Contact
-              </Link>
+              {NavLinks.map(({ href, label }) => {
+                const isActive =
+                  pathname === href || pathname.startsWith(`${href}/`);
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`block px-4 py-3 text-base font-medium rounded-xl transition-colors hover:bg-orange-50 dark:hover:bg-orange-900/10 hover:text-orange-600 dark:hover:text-orange-500 ${
+                      isActive
+                        ? "text-orange-600 dark:text-orange-500"
+                        : "text-gray-700 dark:text-gray-200"
+                    }`}
+                  >
+                    {label}
+                  </Link>
+                );
+              })}
+
+              {/* Opening hours + Cart (mobile quick actions) */}
+              {/* <div className="px-4 pt-2">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2 rounded-full border border-gray-200/50 dark:border-gray-800/50 bg-gray-200/20 dark:bg-gray-800/20 px-3 py-2">
+                    <Clock className="w-4 h-4 text-orange-600 dark:text-orange-500" />
+                    <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                      10AM - 10PM daily
+                    </span>
+                  </div>
+
+                  <Link
+                    href="/cart"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center gap-2 rounded-xl border border-gray-200/60 dark:border-gray-800 bg-white/60 dark:bg-gray-900/50 backdrop-blur px-3 py-2 hover:bg-gray-100/70 dark:hover:bg-gray-800/60 transition-colors"
+                  >
+                    <ShoppingCart className="w-5 h-5 text-orange-600 dark:text-orange-500" />
+                    <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                      Cart
+                    </span>
+                  </Link>
+                </div>
+              </div> */}
 
               <div className="h-px bg-gray-100 dark:bg-gray-800 my-4 mx-4" />
 
@@ -397,13 +447,13 @@ const Header: React.FC = () => {
                       </div>
                     </div>
 
-                    <Link
+                    {/* <Link
                       href="/orders"
                       className="flex items-center gap-3 px-4 py-3 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-orange-50 dark:hover:bg-orange-900/10 hover:text-orange-600 dark:hover:text-orange-500 rounded-xl transition-colors"
                     >
-                      <ShoppingBag className="w-5 h-5" />
+                      <ShoppingCart className="w-5 h-5" />
                       My Orders
-                    </Link>
+                    </Link> */}
                     {(user.role === "admin" || user.role === "staff") && (
                       <Link
                         href="/dashboard"
@@ -465,7 +515,9 @@ const Header: React.FC = () => {
                     <span className="font-medium">Appearance</span>
                   </div>
                   <ChevronDown
-                    className={`w-5 h-5 transition-transform duration-200 ${isThemeExpanded ? "rotate-180" : ""}`}
+                    className={`w-5 h-5 transition-transform duration-200 ${
+                      isThemeExpanded ? "rotate-180" : ""
+                    }`}
                   />
                 </button>
 

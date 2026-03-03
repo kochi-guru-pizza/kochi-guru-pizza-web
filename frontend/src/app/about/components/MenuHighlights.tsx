@@ -5,6 +5,8 @@ import React from "react";
 import Link from "next/link";
 import { Flame, Leaf, Zap, ChefHat } from "lucide-react";
 import { motion } from "framer-motion";
+import ScrollAnimatedList from "@components/ScrollAnimatedList";
+import ScrollAnimatedItem from "@components/ScrollAnimatedItem";
 
 const menuHighlights = [
   {
@@ -33,23 +35,6 @@ const menuHighlights = [
   }
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 }
-  }
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5 }
-  }
-};
-
 export default function MenuHighlights() {
   return (
     <section className="py-20 md:py-24 bg-orange-50/30 dark:bg-gray-900 transition-colors duration-300">
@@ -70,32 +55,26 @@ export default function MenuHighlights() {
           </p>
         </motion.div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-        >
+        <ScrollAnimatedList className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {menuHighlights.map((item) => (
-            <motion.div
-              key={item.category}
-              variants={cardVariants}
-              whileHover={{ y: -8, transition: { duration: 0.2 } }}
-              className="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-smooth duration-300 border border-gray-100 dark:border-gray-700 p-6 gpu-fix"
-            >
-              <div className="flex items-center justify-center w-16 h-16 rounded-full bg-linear-to-br from-orange-400 to-orange-600 text-white mb-4 group-hover:scale-110 transition-transform duration-300">
-                {item.icon}
-              </div>
-              <h3 className="font-heading text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                {item.category}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                {item.description}
-              </p>
-            </motion.div>
+            <ScrollAnimatedItem key={item.category} className="h-full">
+              <motion.div
+                whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                className="group bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-smooth duration-300 border border-gray-100 dark:border-gray-700 p-6 gpu-fix h-full"
+              >
+                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-linear-to-br from-orange-400 to-orange-600 text-white mb-4 group-hover:scale-110 transition-transform duration-300">
+                  {item.icon}
+                </div>
+                <h3 className="font-heading text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                  {item.category}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                  {item.description}
+                </p>
+              </motion.div>
+            </ScrollAnimatedItem>
           ))}
-        </motion.div>
+        </ScrollAnimatedList>
 
         <div className="text-center mt-10">
           <Link

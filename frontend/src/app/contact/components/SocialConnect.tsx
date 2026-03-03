@@ -4,6 +4,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Phone } from "lucide-react";
+import ScrollAnimatedList from "@components/ScrollAnimatedList";
+import ScrollAnimatedItem from "@components/ScrollAnimatedItem";
 
 // SVG icons for social platforms
 const FacebookIcon = () => (
@@ -67,23 +69,6 @@ const socials = [
   }
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 }
-  }
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5 }
-  }
-};
-
 export default function SocialConnect() {
   return (
     <section className="py-20 md:py-24 bg-orange-50/30 dark:bg-gray-900 transition-colors duration-300">
@@ -107,40 +92,36 @@ export default function SocialConnect() {
           </p>
         </motion.div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.15 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
-        >
+        <ScrollAnimatedList className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {socials.map((social) => (
-            <motion.a
-              key={social.name}
-              href={social.href}
-              target={social.name !== "Phone" ? "_blank" : undefined}
-              rel={social.name !== "Phone" ? "noopener noreferrer" : undefined}
-              variants={cardVariants}
-              whileHover={{ y: -6, transition: { duration: 0.2 } }}
-              className={`group flex flex-col items-center text-center bg-white dark:bg-gray-800 rounded-2xl shadow-md border border-gray-100 dark:border-gray-700 p-7 transition-smooth duration-300 hover:shadow-xl ${social.hoverBg} ${social.hoverBorder} gpu-fix`}
-            >
-              <div
-                className={`flex items-center justify-center w-16 h-16 rounded-2xl bg-linear-to-br ${social.gradient} text-white mb-5 shadow-md group-hover:scale-110 transition-transform duration-300`}
+            <ScrollAnimatedItem key={social.name} className="h-full">
+              <motion.a
+                href={social.href}
+                target={social.name !== "Phone" ? "_blank" : undefined}
+                rel={
+                  social.name !== "Phone" ? "noopener noreferrer" : undefined
+                }
+                whileHover={{ y: -6, transition: { duration: 0.2 } }}
+                className={`group flex flex-col items-center text-center bg-white dark:bg-gray-800 rounded-2xl shadow-md border border-gray-100 dark:border-gray-700 p-7 transition-smooth duration-300 hover:shadow-xl ${social.hoverBg} ${social.hoverBorder} gpu-fix h-full`}
               >
-                {social.icon}
-              </div>
-              <h3 className="font-heading text-lg font-bold text-gray-900 dark:text-white mb-1">
-                {social.name}
-              </h3>
-              <p className="text-orange-600 dark:text-orange-500 font-semibold text-sm mb-2">
-                {social.handle}
-              </p>
-              <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
-                {social.description}
-              </p>
-            </motion.a>
+                <div
+                  className={`flex items-center justify-center w-16 h-16 rounded-2xl bg-linear-to-br ${social.gradient} text-white mb-5 shadow-md group-hover:scale-110 transition-transform duration-300`}
+                >
+                  {social.icon}
+                </div>
+                <h3 className="font-heading text-lg font-bold text-gray-900 dark:text-white mb-1">
+                  {social.name}
+                </h3>
+                <p className="text-orange-600 dark:text-orange-500 font-semibold text-sm mb-2">
+                  {social.handle}
+                </p>
+                <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
+                  {social.description}
+                </p>
+              </motion.a>
+            </ScrollAnimatedItem>
           ))}
-        </motion.div>
+        </ScrollAnimatedList>
       </div>
     </section>
   );

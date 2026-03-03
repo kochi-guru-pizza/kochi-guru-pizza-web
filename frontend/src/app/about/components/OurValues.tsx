@@ -4,6 +4,8 @@
 import React from "react";
 import { Heart, Sprout, Users, Award } from "lucide-react";
 import { motion } from "framer-motion";
+import ScrollAnimatedList from "@components/ScrollAnimatedList";
+import ScrollAnimatedItem from "@components/ScrollAnimatedItem";
 
 const values = [
   {
@@ -36,23 +38,6 @@ const values = [
   }
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.12 }
-  }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 28 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.55, ease: "easeOut" as const }
-  }
-};
-
 export default function OurValues() {
   return (
     <section className="py-20 md:py-24 bg-orange-50/30 dark:bg-gray-900 transition-colors duration-300">
@@ -76,36 +61,30 @@ export default function OurValues() {
           </p>
         </motion.div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.15 }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
-        >
+        <ScrollAnimatedList className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {values.map((value) => (
-            <motion.div
-              key={value.title}
-              variants={itemVariants}
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
-              className="group flex gap-5 bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-smooth duration-300 border border-gray-100 dark:border-gray-700 p-7 gpu-fix"
-            >
-              <div
-                className={`flex items-center justify-center w-14 h-14 rounded-xl bg-linear-to-br ${value.accent} text-white shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-md`}
+            <ScrollAnimatedItem key={value.title} className="h-full">
+              <motion.div
+                whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                className="group flex gap-5 bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-smooth duration-300 border border-gray-100 dark:border-gray-700 p-7 gpu-fix h-full"
               >
-                {value.icon}
-              </div>
-              <div>
-                <h3 className="font-heading text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                  {value.title}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                  {value.description}
-                </p>
-              </div>
-            </motion.div>
+                <div
+                  className={`flex items-center justify-center w-14 h-14 rounded-xl bg-linear-to-br ${value.accent} text-white shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-md`}
+                >
+                  {value.icon}
+                </div>
+                <div>
+                  <h3 className="font-heading text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                    {value.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                    {value.description}
+                  </p>
+                </div>
+              </motion.div>
+            </ScrollAnimatedItem>
           ))}
-        </motion.div>
+        </ScrollAnimatedList>
       </div>
     </section>
   );

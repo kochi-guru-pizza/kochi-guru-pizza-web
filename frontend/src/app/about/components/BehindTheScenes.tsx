@@ -4,6 +4,8 @@
 import React from "react";
 import { Flame, Clock, Sparkles, Wheat } from "lucide-react";
 import { motion } from "framer-motion";
+import ScrollAnimatedList from "@components/ScrollAnimatedList";
+import ScrollAnimatedItem from "@components/ScrollAnimatedItem";
 
 const steps = [
   {
@@ -36,23 +38,6 @@ const steps = [
   }
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.12 }
-  }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, x: -20 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.5, ease: "easeOut" as const }
-  }
-};
-
 export default function BehindTheScenes() {
   return (
     <section className="py-20 md:py-24 bg-orange-50/30 dark:bg-gray-900 transition-colors duration-300 overflow-x-hidden">
@@ -81,17 +66,11 @@ export default function BehindTheScenes() {
               pride in every step. Here is how our process works.
             </p>
 
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.15 }}
-              className="space-y-6"
-            >
+            <ScrollAnimatedList className="space-y-6">
               {steps.map((step) => (
-                <motion.div
+                <ScrollAnimatedItem
                   key={step.step}
-                  variants={itemVariants}
+                  direction="left"
                   className="flex gap-4 group gpu-fix"
                 >
                   {/* Step number + icon */}
@@ -116,9 +95,9 @@ export default function BehindTheScenes() {
                       {step.description}
                     </p>
                   </div>
-                </motion.div>
+                </ScrollAnimatedItem>
               ))}
-            </motion.div>
+            </ScrollAnimatedList>
           </motion.div>
 
           {/* Right — Visual placeholder grid */}

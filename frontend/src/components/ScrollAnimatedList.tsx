@@ -5,14 +5,18 @@ import { createContext, useContext, useMemo, ReactNode } from "react";
 
 /**
  * Collects items whose whileInView fires within the same event-loop flush
- * (setTimeout(0)), then distributes stagger delays in DOM order.
- * This way delays are based on the ACTUAL number of items visible at once —
- * adapting to any screen size, grid layout, or list length at runtime.
+ * (setTimeout(0)), then distributes stagger delays in the order they
+ * registered with the coordinator. This typically corresponds to the render
+ * (and thus DOM) order, but no explicit DOM-based sorting is performed.
  */
 class StaggerCoordinator {
   private batch: Array<(delay: number) => void> = [];
   private scheduled = false;
-  private readonly step = 0.1; // seconds per item in batch
+  private readonly step: number;
+
+  constructor(step: number = 0.1) {
+    this.step = step;
+  }
 
   register(callback: (delay: number) => void) {
     this.batch.push(callback);
@@ -34,6 +38,7 @@ export const useStaggerCoordinator = () => useContext(CoordinatorContext);
 interface ScrollAnimatedListProps {
   children: ReactNode;
   className?: string;
+  staggerStep?: number;
 }
 
 /**
@@ -44,9 +49,13 @@ interface ScrollAnimatedListProps {
  */
 export default function ScrollAnimatedList({
   children,
-  className = ""
+  className = "",
+  staggerStep = 0.1
 }: ScrollAnimatedListProps) {
-  const coordinator = useMemo(() => new StaggerCoordinator(), []);
+  const coordinator = useMemo(
+    () => new StaggerCoordinator(staggerStep),
+    [staggerStep]
+  );
   return (
     <CoordinatorContext.Provider value={coordinator}>
       <div className={className}>{children}</div>

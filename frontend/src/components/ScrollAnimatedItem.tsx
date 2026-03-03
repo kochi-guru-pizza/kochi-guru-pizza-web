@@ -1,7 +1,7 @@
 // src/components/ScrollAnimatedItem.tsx
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, UseInViewOptions } from "framer-motion";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { useStaggerCoordinator } from "@components/ScrollAnimatedList";
 
@@ -17,6 +17,10 @@ interface ScrollAnimatedItemProps {
    */
   direction?: "up" | "left" | "right" | "down";
   duration?: number;
+  once?: boolean;
+  amount?: "some" | "all" | number;
+  margin?: UseInViewOptions["margin"];
+  initialDelay?: number;
 }
 
 const variants = {
@@ -51,21 +55,29 @@ export default function ScrollAnimatedItem({
   children,
   className = "",
   direction = "up",
-  duration = 0.5
+  duration = 0.5,
+  once = false,
+  amount = 0.2,
+  margin,
+  initialDelay = 0.25
 }: ScrollAnimatedItemProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: false, amount: 0.2 });
+  const isInView = useInView(ref, { once, amount, margin });
   const coordinator = useStaggerCoordinator();
 
   const [visible, setVisible] = useState(false);
-  const [delay, setDelay] = useState(0);
+  const [delay, setDelay] = useState(initialDelay);
 
   useEffect(() => {
+    let isMounted = true;
+
     if (isInView) {
       if (coordinator) {
         coordinator.register((d) => {
-          setDelay(d);
-          setVisible(true);
+          if (isMounted) {
+            setDelay(d + initialDelay);
+            setVisible(true);
+          }
         });
       } else {
         setVisible(true);
@@ -74,7 +86,11 @@ export default function ScrollAnimatedItem({
       setVisible(false);
       setDelay(0);
     }
-  }, [isInView, coordinator]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isInView, coordinator, initialDelay]);
 
   return (
     <motion.div
@@ -82,9 +98,7 @@ export default function ScrollAnimatedItem({
       variants={variants[direction]}
       initial="hidden"
       animate={visible ? "visible" : "hidden"}
-      transition={
-        visible ? { duration, ease: "easeOut", delay } : { duration: 0.5 }
-      }
+      transition={visible ? { duration, ease: "easeOut", delay } : { duration }}
       className={className}
     >
       {children}

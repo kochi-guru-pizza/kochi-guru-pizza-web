@@ -14,7 +14,7 @@ class StaggerCoordinator {
   private scheduled = false;
   private readonly step: number;
 
-  constructor(step: number = 0.1) {
+  constructor(step: number) {
     this.step = step;
   }
 

@@ -7,6 +7,14 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/v1";
 const ACCESS_TOKEN_KEY = "kochi_access_token";
 const REFRESH_TOKEN_KEY = "kochi_refresh_token";
 
+const publicRoutes = ["/", "/menu", "/about", "/contact"];
+
+const isPublicRoute = (pathname: string) => {
+  return publicRoutes.some(
+    (route) => pathname === route || pathname.startsWith(`${route}/`)
+  );
+};
+
 /**
  * Get access token from localStorage
  */
@@ -130,8 +138,12 @@ export const httpClient = async <T>(
               if (!retryResponse.ok) {
                 if (retryResponse.status === 401) {
                   clearTokens();
-                  if (typeof window !== "undefined")
+                  if (
+                    typeof window !== "undefined" &&
+                    !isPublicRoute(window.location.pathname)
+                  ) {
                     window.location.href = "/login";
+                  }
                   throw new ApiError(
                     "Session expired. Please login again.",
                     401
@@ -162,8 +174,12 @@ export const httpClient = async <T>(
               // Only force logout if the backend explicitly tells us the token is invalid (400, 401)
               if ([400, 401].includes(refreshResponse.status)) {
                 clearTokens();
-                if (typeof window !== "undefined")
+                if (
+                  typeof window !== "undefined" &&
+                  !isPublicRoute(window.location.pathname)
+                ) {
                   window.location.href = "/login";
+                }
                 throw new ApiError(
                   "Session expired. Please login again.",
                   refreshResponse.status
@@ -184,7 +200,12 @@ export const httpClient = async <T>(
         } else {
           // No refresh token, clear tokens
           clearTokens();
-          if (typeof window !== "undefined") window.location.href = "/login";
+          if (
+            typeof window !== "undefined" &&
+            !isPublicRoute(window.location.pathname)
+          ) {
+            window.location.href = "/login";
+          }
           throw new Error("Unauthorized");
         }
       }

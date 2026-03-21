@@ -3,6 +3,35 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Brand */
+  --color-brand: var(--color-orange-600);
+  --color-brand-muted: var(--color-orange-500);
+  --color-brand-subtle: var(--color-orange-400);
+  --color-brand-wash: var(--color-orange-50);
+
+  /* Danger */
+  --color-danger: var(--color-red-500);
+  --color-danger-wash: var(--color-red-50);
+
+  /* Success */
+  --color-success: var(--color-green-600);
+
+  /* Surfaces */
+  --color-surface: var(--color-white);
+  --color-surface-card: var(--color-white);
+  --color-surface-sub: var(--color-gray-50);
+  --color-surface-raised: var(--color-gray-100);
+
+  /* Text */
+  --color-ink: var(--color-gray-900);
+  --color-ink-muted: var(--color-gray-600);
+  --color-ink-faint: var(--color-gray-500);
+  --color-ink-brand: var(--color-orange-600);
+
+  /* Borders */
+  --color-border: var(--color-gray-200);
+  --color-border-strong: var(--color-gray-300);
 }
 
 /* Use the .dark class to apply dark mode variables */
@@ -10,6 +39,35 @@
 .dark {
   --background: #0a0a0a;
   --foreground: #ededed;
+
+  /* Brand */
+  --color-brand: var(--color-orange-500);
+  --color-brand-muted: var(--color-orange-400);
+  --color-brand-subtle: var(--color-orange-400);
+  --color-brand-wash: var(--color-orange-950);
+
+  /* Danger */
+  --color-danger: var(--color-red-500);
+  --color-danger-wash: var(--color-red-950);
+
+  /* Success */
+  --color-success: var(--color-green-500);
+
+  /* Surfaces */
+  --color-surface: var(--color-gray-950);
+  --color-surface-card: var(--color-gray-800);
+  --color-surface-sub: var(--color-gray-900);
+  --color-surface-raised: var(--color-gray-800);
+
+  /* Text */
+  --color-ink: var(--color-gray-100);
+  --color-ink-muted: var(--color-gray-400);
+  --color-ink-faint: var(--color-gray-500);
+  --color-ink-brand: var(--color-orange-500);
+
+  /* Borders */
+  --color-border: var(--color-gray-700);
+  --color-border-strong: var(--color-gray-600);
 }
 
 @theme inline {
@@ -17,6 +75,35 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-poppins);
   --font-heading: var(--font-montserrat);
+
+  /* Brand */
+  --color-brand: var(--color-brand);
+  --color-brand-muted: var(--color-brand-muted);
+  --color-brand-subtle: var(--color-brand-subtle);
+  --color-brand-wash: var(--color-brand-wash);
+
+  /* Danger */
+  --color-danger: var(--color-danger);
+  --color-danger-wash: var(--color-danger-wash);
+
+  /* Success */
+  --color-success: var(--color-success);
+
+  /* Surfaces */
+  --color-surface: var(--color-surface);
+  --color-surface-card: var(--color-surface-card);
+  --color-surface-sub: var(--color-surface-sub);
+  --color-surface-raised: var(--color-surface-raised);
+
+  /* Text */
+  --color-ink: var(--color-ink);
+  --color-ink-muted: var(--color-ink-muted);
+  --color-ink-faint: var(--color-ink-faint);
+  --color-ink-brand: var(--color-ink-brand);
+
+  /* Borders */
+  --color-border: var(--color-border);
+  --color-border-strong: var(--color-border-strong);
 }
 
 @variant dark (&:where(.dark, .dark *));
@@ -40,6 +127,43 @@
     var(--default-transition-timing-function)
   );
   transition-duration: var(--tw-duration, var(--default-transition-duration));
+}
+
+/*  Hero banners & CTA sections
+    Used: MenuHeroBanner, about/HeroBanner, contact/HeroBanner, CtaBanner
+    Replaces: bg-linear-to-br from-orange-600 via-orange-500 to-red-500    */
+@utility bg-hero-brand-gradient {
+  @apply bg-linear-to-br from-orange-600 via-orange-500 to-red-500;
+  @variant dark {
+    @apply bg-linear-to-br from-orange-700 via-orange-600 to-red-600;
+  }
+}
+
+/*  Primary CTA buttons
+    Used: LoginForm, RegisterForm, MenuHighlights, VisitUsSection, ContactForm, dashboard/menu
+    Replaces: bg-linear-to-r from-orange-600 to-orange-500                  */
+@utility bg-brand-btn {
+  @apply bg-linear-to-r from-orange-600 to-orange-500;
+  @variant dark {
+    @apply bg-linear-to-r from-orange-600 to-orange-500;
+  }
+}
+
+@utility bg-brand-btn-dark {
+  @apply bg-linear-to-r from-orange-700 to-orange-600;
+  @variant dark {
+    @apply bg-linear-to-r from-orange-700 to-orange-600;
+  }
+}
+
+/*  Icon blobs — circular/rounded elements with brand gradient
+    Used: WhyChooseUs, ContactForm, VisitUsSection, MenuHighlights, BehindTheScenes
+    Replaces: bg-linear-to-br from-orange-400 to-orange-600                 */
+@utility bg-blob-gradient {
+  @apply bg-linear-to-br from-orange-400 to-orange-600;
+  @variant dark {
+    @apply bg-linear-to-br from-orange-400 to-orange-600;
+  }
 }
 
 body {

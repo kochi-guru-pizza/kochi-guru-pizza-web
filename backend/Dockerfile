@@ -13,7 +13,7 @@ RUN npm install
 # Copy the rest of the application source code into the container
 COPY . .
 
-# Build the Next.js application for production
+# Build the Backend application (compiles TypeScript to JavaScript)
 RUN npm run build
 
 # Inform Docker that the container will listen on port 5000 at runtime

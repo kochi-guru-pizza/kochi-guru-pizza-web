@@ -23,14 +23,14 @@ services:
       context: ./frontend # Location of the frontend source code
       args:
         # Pass a Build Argument to the Dockerfile to bake the API URL into the code
-        - NEXT_PUBLIC_API_URL=http://localhost:5000/v1
+        - NEXT_PUBLIC_API_URL
     # Bridge port 3000 on your machine to port 3000 inside the container
     ports:
       - "3000:3000" # Map (Local Port) : (Container Port)
     # Load other environment variables from .env.local
     environment:
       - INTERNAL_API_URL=http://backend:5000/v1
-    env_file: ./frontend/.env.local
+    env_file: ./frontend/.env
     # Wait for the backend container to be created before starting the frontend
     depends_on:
       - backend

@@ -12,7 +12,8 @@ const {
   REFRESH_TOKEN_EXPIRES_IN,
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
-  GOOGLE_CALLBACK_URL
+  GOOGLE_CALLBACK_URL,
+  NODE_ENV
 } = process.env;
 
 // Validate required environment variables
@@ -46,6 +47,7 @@ interface Config {
   GOOGLE_CLIENT_SECRET: string;
   GOOGLE_CALLBACK_URL: string;
   MAX_ACTIVE_SESSIONS: number;
+  NODE_ENV: string;
 }
 
 const config: Config = {
@@ -59,7 +61,8 @@ const config: Config = {
   GOOGLE_CLIENT_ID: GOOGLE_CLIENT_ID as string,
   GOOGLE_CLIENT_SECRET: GOOGLE_CLIENT_SECRET as string,
   GOOGLE_CALLBACK_URL: GOOGLE_CALLBACK_URL as string,
-  MAX_ACTIVE_SESSIONS: Number(process.env.MAX_ACTIVE_SESSIONS) || 5
+  MAX_ACTIVE_SESSIONS: Number(process.env.MAX_ACTIVE_SESSIONS) || 5,
+  NODE_ENV: NODE_ENV || "production"
 };
 
 export default config;

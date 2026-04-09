@@ -1,7 +1,10 @@
 // src/lib/httpServerClient.ts
 import { ApiError } from "@lib/ApiError";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/v1";
+const API_URL =
+  process.env.INTERNAL_API_URL ||
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://localhost:5000/v1";
 
 /**
  * Server-side HTTP client with automatic retries for resilient fetching.

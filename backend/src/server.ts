@@ -44,7 +44,7 @@ app.get("/", (req, res) => {
 export default app;
 
 // Only start the server locally
-if (process.env.NODE_ENV !== "production") {
+if (config.PLATFORM !== "vercel") {
   app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
     console.log(`Allowed CORS: `, config.FRONTEND_URL);

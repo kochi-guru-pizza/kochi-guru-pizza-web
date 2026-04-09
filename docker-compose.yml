@@ -1,0 +1,36 @@
+name: kochi-guru-pizza
+
+# Define the services that make up the application
+services:
+  # BACKEND SERVICE: Configures the Node.js API
+  backend:
+    image: kochi-guru-pizza-backend
+    container_name: kochi-guru-pizza-backend
+    # Build the image using the Dockerfile in the ./backend directory
+    build: ./backend
+    # Bridge port 5000 on your machine to port 5000 inside the container
+    ports:
+      - "5000:5000" # Map (Local Port) : (Container Port)
+    # Load runtime environment variables (like DB connections) from the local .env file
+    env_file: ./backend/.env
+
+  # FRONTEND SERVICE: Configures the Next.js web application
+  frontend:
+    image: kochi-guru-pizza-frontend
+    container_name: kochi-guru-pizza-frontend
+    #Build the image using the Dockerfile in the ./frontend directory
+    build:
+      context: ./frontend # Location of the frontend source code
+      args:
+        # Pass a Build Argument to the Dockerfile to bake the API URL into the code
+        - NEXT_PUBLIC_API_URL=http://localhost:5000/v1
+    # Bridge port 3000 on your machine to port 3000 inside the container
+    ports:
+      - "3000:3000" # Map (Local Port) : (Container Port)
+    # Load other environment variables from .env.local
+    environment:
+      - INTERNAL_API_URL=http://backend:5000/v1
+    env_file: ./frontend/.env.local
+    # Wait for the backend container to be created before starting the frontend
+    depends_on:
+      - backend

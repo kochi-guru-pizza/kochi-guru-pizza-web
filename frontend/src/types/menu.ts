@@ -28,7 +28,7 @@ export interface MenuItem {
   variants?: IPriceVariant[];
   price?: number;
   isAvailable: boolean;
-  image?: string;
+  images?: string[];
   sortOrder: number;
   createdAt: string;
   updatedAt: string;
@@ -46,7 +46,7 @@ export interface CreateMenuItemPayload {
   variants?: IPriceVariant[];
   price?: number;
   isAvailable?: boolean;
-  image?: string;
+  images?: string[];
   sortOrder?: number;
 }
 

@@ -86,7 +86,8 @@ export const httpClient = async <T>(
     const headers = new Headers(options.headers);
 
     // Set default Content-Type if not provided
-    if (!headers.has("Content-Type")) {
+    // Set default Content-Type if not provided and body is not FormData
+    if (!headers.has("Content-Type") && !(options.body instanceof FormData)) {
       headers.set("Content-Type", "application/json");
     }
 

@@ -1,5 +1,6 @@
+# Stage 1: Build the app
 # Use Node.js 24 Alpine as the base for a smaller, secure container image
-FROM node:24-alpine
+FROM node:24-alpine as builder
 
 # Set the working directory inside the container for all subsequent commands
 WORKDIR /app
@@ -20,6 +21,14 @@ ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 
 # Build the Next.js application for production
 RUN npm run build
+
+# Stage 2: Copy the build to runner
+FROM node:24-alpine as runner
+
+WORKDIR /app
+
+# Copy build output from builder
+COPY --from=builder /app /app
 
 # Inform Docker that the container will listen on port 3000 at runtime
 EXPOSE 3000

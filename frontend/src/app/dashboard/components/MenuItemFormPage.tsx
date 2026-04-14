@@ -16,6 +16,7 @@ import {
   IPriceVariant,
   PizzaSize
 } from "@typings/menu";
+import ImageGalleryManager from "@/components/admin/ImageGalleryManager";
 
 interface MenuItemFormPageProps {
   item?: MenuItem | null; // null/undefined = create mode
@@ -57,7 +58,7 @@ export default function MenuItemFormPage({
       : DEFAULT_VARIANTS
   );
   const [isAvailable, setIsAvailable] = useState(item?.isAvailable ?? true);
-  const [image, setImage] = useState(item?.image ?? "");
+  const [images, setImages] = useState<string[]>(item?.images ?? []);
   const [sortOrder, setSortOrder] = useState<string>(
     item?.sortOrder !== undefined ? String(item.sortOrder) : "0"
   );
@@ -109,7 +110,7 @@ export default function MenuItemFormPage({
       category,
       isAvailable,
       sortOrder: Number(sortOrder) || 0,
-      image: image.trim() || undefined
+      images: images
     };
 
     if (isVariantCategory) {
@@ -287,18 +288,12 @@ export default function MenuItemFormPage({
             </div>
           )}
 
-          {/* Image URL */}
+          {/* Image Gallery Manager */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">
-              Image URL
+              Product Images
             </label>
-            <input
-              type="url"
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-              placeholder="https://..."
-              className="w-full px-4 py-2.5 bg-white dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all duration-200 text-gray-900 dark:text-white placeholder-gray-400"
-            />
+            <ImageGalleryManager initialImages={images} onChange={setImages} />
           </div>
 
           {/* Sort Order + Availability row */}

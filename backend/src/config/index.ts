@@ -13,7 +13,12 @@ const {
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
   GOOGLE_CALLBACK_URL,
-  NODE_ENV
+  NODE_ENV,
+  CLOUDFLARE_ACCOUNT_ID,
+  R2_ACCESS_KEY_ID,
+  R2_SECRET_ACCESS_KEY,
+  R2_PUBLIC_DOMAIN,
+  R2_BUCKET_NAME
 } = process.env;
 
 // Validate required environment variables
@@ -24,7 +29,12 @@ const requiredEnvVars = [
   "REFRESH_TOKEN_SECRET",
   "GOOGLE_CLIENT_ID",
   "GOOGLE_CLIENT_SECRET",
-  "GOOGLE_CALLBACK_URL"
+  "GOOGLE_CALLBACK_URL",
+  "CLOUDFLARE_ACCOUNT_ID",
+  "R2_ACCESS_KEY_ID",
+  "R2_SECRET_ACCESS_KEY",
+  "R2_PUBLIC_DOMAIN",
+  "R2_BUCKET_NAME"
 ];
 
 const missingEnvVars = requiredEnvVars.filter((envVar) => !process.env[envVar]);
@@ -48,6 +58,11 @@ interface Config {
   GOOGLE_CALLBACK_URL: string;
   MAX_ACTIVE_SESSIONS: number;
   NODE_ENV: string;
+  CLOUDFLARE_ACCOUNT_ID: string;
+  R2_ACCESS_KEY_ID: string;
+  R2_SECRET_ACCESS_KEY: string;
+  R2_PUBLIC_DOMAIN: string;
+  R2_BUCKET_NAME: string;
 }
 
 const config: Config = {
@@ -62,7 +77,12 @@ const config: Config = {
   GOOGLE_CLIENT_SECRET: GOOGLE_CLIENT_SECRET as string,
   GOOGLE_CALLBACK_URL: GOOGLE_CALLBACK_URL as string,
   MAX_ACTIVE_SESSIONS: Number(process.env.MAX_ACTIVE_SESSIONS) || 5,
-  NODE_ENV: NODE_ENV || "production"
+  NODE_ENV: NODE_ENV || "production",
+  CLOUDFLARE_ACCOUNT_ID: CLOUDFLARE_ACCOUNT_ID as string,
+  R2_ACCESS_KEY_ID: R2_ACCESS_KEY_ID as string,
+  R2_SECRET_ACCESS_KEY: R2_SECRET_ACCESS_KEY as string,
+  R2_PUBLIC_DOMAIN: R2_PUBLIC_DOMAIN as string,
+  R2_BUCKET_NAME: R2_BUCKET_NAME as string
 };
 
 export default config;

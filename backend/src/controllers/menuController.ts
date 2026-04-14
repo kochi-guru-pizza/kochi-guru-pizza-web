@@ -76,7 +76,7 @@ export const createMenuItem = async (
       variants,
       price,
       isAvailable,
-      image,
+      images,
       sortOrder
     } = req.body;
 
@@ -88,7 +88,7 @@ export const createMenuItem = async (
       variants,
       price,
       isAvailable: isAvailable ?? true,
-      image,
+      images,
       sortOrder: sortOrder ?? 0
     });
 
@@ -125,7 +125,7 @@ export const updateMenuItem = async (
       "variants",
       "price",
       "isAvailable",
-      "image",
+      "images",
       "sortOrder"
     ];
 

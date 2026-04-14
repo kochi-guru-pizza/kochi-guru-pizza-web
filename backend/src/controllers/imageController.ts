@@ -15,8 +15,8 @@ export const uploadImage = async (req: Request, res: Response) => {
     const url = await uploadToR2(req.file);
     res.status(200).json({ url });
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Upload failed";
-    res.status(500).json({ message: "Upload failed", error: message });
+    console.error("Upload failed:", error);
+    res.status(500).json({ message: "Upload failed" });
   }
 };
 
@@ -39,19 +39,18 @@ export const deleteImage = async (req: Request, res: Response) => {
       message: "File deleted successfully and synchronized with database"
     });
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Deletion failed";
-    res.status(500).json({ message: "Deletion failed", error: message });
+    console.error("Failed to delete image:", error);
+    res.status(500).json({ message: "Deletion failed" });
   }
 };
 
 export const reconcileImages = async (req: Request, res: Response) => {
   try {
-    const { dryRun } = req.body;
+    const dryRun = req.body?.dryRun ?? true;
     const result = await reconcileStorage(Boolean(dryRun));
     res.status(200).json(result);
   } catch (error: unknown) {
-    const message =
-      error instanceof Error ? error.message : "Reconciliation failed";
-    res.status(500).json({ message: "Reconciliation failed", error: message });
+    console.error("Reconciliation failed:", error);
+    res.status(500).json({ message: "Reconciliation failed" });
   }
 };

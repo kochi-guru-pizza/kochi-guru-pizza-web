@@ -30,7 +30,14 @@ export const uploadToR2 = async (file: Express.Multer.File) => {
     .replace(/T/, "_")
     .replace(/\..+/, "")
     .replace(/[-:]/g, "");
-  const extension = file.originalname.split(".").pop();
+
+  const MIME_MAP: Record<string, string> = {
+    "image/jpeg": "jpg",
+    "image/jpg": "jpg",
+    "image/png": "png",
+    "image/webp": "webp"
+  };
+  const extension = MIME_MAP[file.mimetype] || "jpg";
   const fileName = `uploads/menu_image_${timestamp}.${extension}`;
 
   await r2Client.send(
@@ -46,7 +53,15 @@ export const uploadToR2 = async (file: Express.Multer.File) => {
 };
 
 export const deleteFromR2 = async (url: string) => {
+  if (!url.startsWith(PUBLIC_DOMAIN)) {
+    throw new Error("Invalid image URL: Domain mismatch");
+  }
+
   const key = url.replace(`${PUBLIC_DOMAIN}/`, "");
+
+  if (!key.startsWith("uploads/")) {
+    throw new Error("Invalid image path: Access denied to this directory");
+  }
 
   await r2Client.send(
     new DeleteObjectCommand({
@@ -59,15 +74,22 @@ export const deleteFromR2 = async (url: string) => {
 };
 
 export const reconcileStorage = async (dryRun: boolean = false) => {
-  const listedObjects = await r2Client.send(
-    new ListObjectsV2Command({
-      Bucket: BUCKET_NAME
-    })
-  );
+  const bucketKeys: string[] = [];
+  let continuationToken: string | undefined;
+  let listedObjects;
 
-  const bucketKeys = (
-    listedObjects.Contents?.map((obj) => obj.Key) || []
-  ).filter((key): key is string => !!key);
+  do {
+    listedObjects = await r2Client.send(
+      new ListObjectsV2Command({
+        Bucket: BUCKET_NAME,
+        ContinuationToken: continuationToken
+      })
+    );
+
+    const keys = listedObjects.Contents?.map((obj) => obj.Key) || [];
+    bucketKeys.push(...keys.filter((key): key is string => !!key));
+    continuationToken = listedObjects.NextContinuationToken;
+  } while (listedObjects.IsTruncated);
   const menuItems = (await MenuItem.find()) as IMenuItem[];
 
   const activeImages = new Set<string>();

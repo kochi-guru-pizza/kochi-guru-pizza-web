@@ -36,6 +36,9 @@ const CATEGORY_ICONS: Record<MenuCategory, string> = {
 function MenuItemCard({ item }: { item: MenuItem }) {
   const hasVariants = item.variants && item.variants.length > 0;
 
+  // The first image in the array is the primary image selected in the dashboard.
+  const primaryImage = item.images[0];
+
   const sortedVariants = hasVariants
     ? [...item.variants!].sort((a, b) => {
         const order: Record<string, number> = { large: 0, medium: 1, small: 2 };
@@ -62,9 +65,9 @@ function MenuItemCard({ item }: { item: MenuItem }) {
         href={`/menu/${item._id}`}
         className="block relative h-52 bg-gray-100 dark:bg-gray-800 overflow-hidden shrink-0"
       >
-        {item.image ? (
+        {primaryImage ? (
           <Image
-            src={item.image}
+            src={primaryImage}
             alt={item.name}
             width={0}
             height={0}

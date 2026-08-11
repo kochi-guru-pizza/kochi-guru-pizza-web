@@ -1,4 +1,8 @@
 .idea
 .vscode
 *.zip
+*.pdf
+
+under-development-notice
 .env
+.a0proj

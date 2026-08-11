@@ -30,7 +30,7 @@ export interface IMenuItem extends Document {
   // For flat-priced items
   price?: number;
   isAvailable: boolean;
-  images?: string[];
+  images: string[];
   sortOrder: number;
   createdAt: Date;
   updatedAt: Date;
@@ -96,7 +96,9 @@ const MenuItemSchema = new Schema<IMenuItem>(
       default: true
     },
     images: {
-      type: [String]
+      type: [String],
+      default: [],
+      required: true
     },
     sortOrder: {
       type: Number,

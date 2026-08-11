@@ -18,52 +18,60 @@ type Testimonial = {
 const testimonials: Testimonial[] = [
   {
     id: 1,
-    name: "Rajesh Kumar",
+    name: "Hafran Lafeer",
     rating: 5,
     review:
-      "The best pizza in Kochi! The wood-fired crust is absolutely perfect, and the toppings are always fresh.",
-    date: "2 weeks ago"
+      "Hands down one of the best pizza Ive had in sooo long. Would highly recommend this spot !!!",
+    date: "4 months ago"
   },
   {
     id: 2,
-    name: "Priya Menon",
+    name: "Himashi Perera",
     rating: 5,
     review:
-      "Amazing taste and great service! The margherita pizza reminds me of authentic Italian pizzas. Highly recommend!",
-    date: "1 month ago"
+      "Food was really tasty and fresh and the service was friendly, nice place to relax and enjoy a good meal",
+    date: "4 month ago"
   },
   {
     id: 3,
-    name: "Arjun Nair",
+    name: "Achini Jayashani",
     rating: 5,
     review:
-      "The quality is consistently excellent. Love their special pizza with unique toppings. The ambiance is cozy and welcoming.",
-    date: "3 weeks ago"
+      "The pizza here is top quality. great balance of sauce, cheese, and toppings. You can really taste the freshness. Highly recommended the place kochi guru. ❤️❤️❤️ Definetly i'll try again.",
+    date: "7 months ago"
   },
   {
     id: 4,
-    name: "Sneha Reddy",
-    rating: 4,
+    name: "O.A. Sandaruwan",
+    rating: 5,
     review:
-      "Great pizza at reasonable prices. The crust is thin and crispy, just the way I like it. Will definitely come back!",
-    date: "1 week ago"
+      "I had one of the best pizzas in Sri Lanka 🇱🇰 at Kochi Guru. It was absolutely delicious and reminded me of the authentic pizza I enjoyed in Turkey 🇹🇷. My wife loved it too! The flavors, quality, and freshness were outstanding. We highly recommend it to anyone looking for a great pizza experience.",
+    date: "2 weeks ago"
   },
   {
     id: 5,
-    name: "Mohammed Ali",
+    name: "Pramodya Jayarathna",
     rating: 5,
     review:
-      "Fantastic experience! The staff is friendly, the pizza is delicious, and the atmosphere is perfect for family gatherings.",
-    date: "2 months ago"
+      "The pizza was fresh & hot. The crust was perfectly baked, and the service was quite fast. The owner was friendly and the atmosphere was clean and welcoming. Highly recommended",
+    date: "3 months ago"
+  },
+  {
+    id: 6,
+    name: "Avishka Hasaranga",
+    rating: 5,
+    review:
+      "Kochi Guru Pizza is the best place to eat delicious pizza with confidence.❤️ Highy recommended😌❤️",
+    date: "a month ago"
+  },
+  {
+    id: 7,
+    name: "Raveesha Jayasekara",
+    rating: 5,
+    review:
+      "I was not able to visit them but only to ask them to deliver if they can. They had not started delivery services but made it happen anyways. They delivered hot pizzas at my doorstep with such diligence and care. Taste is excellent and I would order again.",
+    date: "7 months ago"
   }
-];
-
-const avatarColors = [
-  "from-orange-400 to-orange-600",
-  "from-rose-400 to-rose-600",
-  "from-teal-400 to-teal-600",
-  "from-violet-400 to-violet-600",
-  "from-amber-400 to-amber-600"
 ];
 
 export default function CustomerTestimonials() {
@@ -111,7 +119,7 @@ export default function CustomerTestimonials() {
   }, [emblaApi]);
 
   const totalReviews = 523;
-  const averageRating = 4.8;
+  const averageRating = 5;
 
   return (
     <section className="py-16 bg-orange-50/30 dark:bg-gray-900 transition-colors duration-300 overflow-hidden">
@@ -148,7 +156,7 @@ export default function CustomerTestimonials() {
                 ))}
               </div>
               <span className="font-bold text-gray-900 dark:text-white text-sm">
-                {averageRating}/5.0
+                {averageRating.toFixed(1)}/5.0
               </span>
               <span className="text-gray-500 dark:text-gray-400 text-sm">
                 Average
@@ -186,14 +194,7 @@ export default function CustomerTestimonials() {
                     <Quote className="absolute top-4 right-4 w-8 h-8 text-orange-100 dark:text-orange-900/40" />
 
                     {/* Customer Info */}
-                    <div className="flex items-center gap-3 mb-4">
-                      <div
-                        className={`w-11 h-11 rounded-full bg-linear-to-br ${avatarColors[idx % avatarColors.length]} flex items-center justify-center shrink-0`}
-                      >
-                        <span className="text-white font-bold text-base">
-                          {testimonial.name.charAt(0)}
-                        </span>
-                      </div>
+                    <div className="flex items-center mb-4">
                       <div>
                         <h3 className="font-semibold text-sm text-gray-900 dark:text-white leading-tight">
                           {testimonial.name}

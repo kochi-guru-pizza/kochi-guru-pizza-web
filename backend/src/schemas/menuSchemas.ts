@@ -29,7 +29,7 @@ export const createMenuItemSchema = z.object({
       variants: z.array(priceVariantSchema).optional(),
       price: z.number().min(0, "Price must be non-negative").optional(),
       isAvailable: z.boolean().optional(),
-      image: z.string().url("Invalid image URL").optional(),
+      images: z.array(z.url("Invalid image URL")).default([]),
       sortOrder: z.number().int().optional()
     })
     .refine(
@@ -69,7 +69,7 @@ export const updateMenuItemSchema = z.object({
       variants: z.array(priceVariantSchema).optional(),
       price: z.number().min(0, "Price must be non-negative").optional(),
       isAvailable: z.boolean().optional(),
-      image: z.string().url("Invalid image URL").optional().nullable(),
+      images: z.array(z.url("Invalid image URL")).optional(),
       sortOrder: z.number().int().optional()
     })
     .refine(

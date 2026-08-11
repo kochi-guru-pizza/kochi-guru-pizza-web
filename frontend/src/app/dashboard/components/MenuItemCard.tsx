@@ -22,6 +22,9 @@ export default function MenuItemCard({
   const { user } = useAuth();
   const router = useRouter();
 
+  // The first image in the array is the primary menu item image.
+  const primaryImage = item.images[0];
+
   const renderPrice = () => {
     if (item.variants && item.variants.length > 0) {
       const sorted = [...item.variants].sort((a, b) => {
@@ -62,9 +65,9 @@ export default function MenuItemCard({
     >
       <div className="flex items-start gap-3 p-4">
         <div className="w-14 h-14 rounded-xl bg-orange-50 dark:bg-orange-900/10 flex items-center justify-center shrink-0 overflow-hidden border border-orange-100 dark:border-orange-900/20">
-          {item.image ? (
+          {primaryImage ? (
             <Image
-              src={item.image}
+              src={primaryImage}
               alt={item.name}
               width={56}
               height={56}

@@ -64,7 +64,7 @@ export default async function MenuItemDetailPage({ params }: Props) {
             {/* Left — image, sticky on desktop, vertically centered in available space */}
             <div className="md:sticky md:top-10 flex items-center">
               <ItemImage
-                src={item.image}
+                images={item.images}
                 alt={item.name}
                 category={item.category}
               />

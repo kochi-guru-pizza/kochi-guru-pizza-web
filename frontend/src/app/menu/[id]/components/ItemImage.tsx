@@ -1,5 +1,11 @@
 // src/app/menu/[id]/components/ItemImage.tsx
+"use client";
+
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { MenuCategory } from "@typings/menu";
 
 const CATEGORY_ICONS: Record<string, string> = {
@@ -16,34 +22,146 @@ const CATEGORY_ICONS: Record<string, string> = {
 };
 
 interface ItemImageProps {
-  src?: string;
+  images: string[];
   alt: string;
   category: MenuCategory;
 }
 
-export default function ItemImage({ src, alt, category }: ItemImageProps) {
+export default function ItemImage({ images, alt, category }: ItemImageProps) {
+  const hasMultipleImages = images.length > 1;
+
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: hasMultipleImages
+    },
+    hasMultipleImages
+      ? [
+          Autoplay({
+            delay: 5000,
+            stopOnInteraction: false
+          })
+        ]
+      : []
+  );
+
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) {
+      emblaApi.scrollPrev();
+    }
+  }, [emblaApi]);
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) {
+      emblaApi.scrollNext();
+    }
+  }, [emblaApi]);
+
+  const scrollTo = useCallback(
+    (index: number) => {
+      if (emblaApi) {
+        emblaApi.scrollTo(index);
+      }
+    },
+    [emblaApi]
+  );
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    const onSelect = () => {
+      setSelectedIndex(emblaApi.selectedScrollSnap());
+    };
+
+    emblaApi.on("select", onSelect);
+    onSelect();
+
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi]);
+
+  if (images.length === 0) {
+    return (
+      <div className="flex h-85 w-full flex-col items-center justify-center gap-3 sm:h-100 lg:h-115">
+        <span className="text-8xl opacity-20">{CATEGORY_ICONS[category]}</span>
+
+        <span className="text-xs font-medium tracking-widest text-gray-400 uppercase dark:text-gray-500">
+          No image available
+        </span>
+      </div>
+    );
+  }
+
   return (
-    <div className="w-full rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-800/60">
-      {src ? (
-        // Use Next.js Image with native aspect ratio preservation trick
-        // width/height 0 paired with w-full h-auto makes it scale naturally
-        <Image
-          src={src}
-          alt={alt}
-          width={0}
-          height={0}
-          sizes="100vw"
-          className="w-full h-auto block object-contain"
-          priority
-        />
-      ) : (
-        <div className="w-full aspect-square flex flex-col items-center justify-center gap-3">
-          <span className="text-8xl opacity-20">
-            {CATEGORY_ICONS[category]}
-          </span>
-          <span className="text-xs text-gray-400 dark:text-gray-500 font-medium tracking-widest uppercase">
-            No image available
-          </span>
+    <div className="w-full">
+      {/* Fixed height carousel to contain portrait images */}
+      <div className="relative h-85 w-full sm:h-100 lg:h-115">
+        {/* Embla carousel viewport */}
+        <div ref={emblaRef} className="h-full w-full overflow-hidden">
+          <div className="flex h-full">
+            {images.map((src, index) => (
+              <div
+                key={src}
+                className="flex h-full min-w-0 flex-[0_0_100%] items-center justify-center"
+              >
+                {/* Natural aspect ratio without `fill`, respecting max dimensions and rounded corners */}
+                <Image
+                  src={src}
+                  alt={`${alt} - image ${index + 1}`}
+                  width={0}
+                  height={0}
+                  sizes="(max-width: 767px) 100vw, 50vw"
+                  className="h-auto max-h-full w-auto max-w-full rounded-xl object-contain"
+                  priority={index === 0}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {hasMultipleImages && (
+          <>
+            {/* Previous image button */}
+            <button
+              type="button"
+              onClick={scrollPrev}
+              className="absolute top-1/2 left-3 z-10 -translate-y-1/2 rounded-full! bg-black/35 p-2.5 backdrop-blur-sm transition-smooth duration-300 hover:bg-black/55"
+              aria-label="Previous image"
+            >
+              <ChevronLeft className="h-5 w-5 text-white" />
+            </button>
+
+            {/* Next image button */}
+            <button
+              type="button"
+              onClick={scrollNext}
+              className="absolute top-1/2 right-3 z-10 -translate-y-1/2 rounded-full! bg-black/35 p-2.5 backdrop-blur-sm transition-smooth duration-300 hover:bg-black/55"
+              aria-label="Next image"
+            >
+              <ChevronRight className="h-5 w-5 text-white" />
+            </button>
+          </>
+        )}
+      </div>
+
+      {hasMultipleImages && (
+        /* Fixed-height navigation area for consistent dot positioning */
+        <div className="flex h-10 items-center justify-center gap-2">
+          {images.map((_, index) => (
+            <button
+              key={index}
+              type="button"
+              onClick={() => scrollTo(index)}
+              className={`h-2 rounded-full transition-smooth duration-300 ${
+                index === selectedIndex
+                  ? "w-8 bg-orange-500"
+                  : "w-2 bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-500"
+              }`}
+              aria-label={`Go to image ${index + 1}`}
+            />
+          ))}
         </div>
       )}
     </div>
